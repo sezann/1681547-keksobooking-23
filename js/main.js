@@ -1,78 +1,6 @@
-// В реализации Академии понравилось то, что нет конструкции if.
-// Поэтому использую эти функции.
-
-
-function getRandomPositiveInteger (a, b) {
-    const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-    const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-    const result = Math.random() * (upper - lower + 1) + lower;
-
-    return Math.floor(result);
-  };
-
-function getRandomPositiveFloat (a, b, digits = 1) {
-    const lower = Math.min(Math.abs(a), Math.abs(b));
-    const upper = Math.max(Math.abs(a), Math.abs(b));
-    const result = Math.random() * (upper - lower) + lower;
-
-    return result.toFixed(digits);
-  };
-
-
-
-
-//ЗАДАЧА => Написать функцию для создания массива (10 сгенерированных JS-объектов), используя утилиты.
-
-
-//УСЛОВИЯ
-
-/*Каждый объект массива - это описание похожего объявления неподалёку.
-
-Объект состоит из трёх ключей, где каждый ключ - это объект:
-
-   1. author = {
-        avatar: 'img/avatars/user{{xx}}.png' ({{xx}} - это число от 1 до 8 с ведущим нулём, напрмер, 01, 02; адреса изображений не повторяются)
-      };
-
-   2. offer = {
-        title: 'заголовок предложения'- значение из массива
-        address: {{location.x}}, {{location.y}} - значение из массива
-        price: случайное целое положительное число,
-        type: 'palace', 'flat', 'bungalow', 'hotel' - значение из массива
-        rooms: случайное целое положительное число,
-        guests: случайное целое положительное число,
-        checkin: '12:00', '13:00', '14:00' - значение из массива
-        checkout: '12:00', '13:00', '14:00' - значение из массива
-        features:
-          'wifi',
-          'dishwasher',
-          'parking',
-          'washer',
-          'elevator',
-          'conditioner'
-
-          массив случайной длины из значений.
-          значения не должны повторяться
-
-        description: 'описание помещения' - значение из массива,
-
-        photos:
-          'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-          'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-          'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
-
-          массив случайной длины из значений.
-      };
-
-   3. location = {
-        lat: число с плавающей точкой - широта, случайное значение от 35.65000 до 35.70000 - (function)
-        lng: число с плавающей точкой - долгота, случайное значение от 139.70000 до 139.80000 - (function)
-      }
-
-
 //ДАННЫЕ
 
-const avatar = [
+const AVATAR = [
       'img/avatars/user01.png',
       'img/avatars/user02.png',
       'img/avatars/user03.png',
@@ -82,149 +10,101 @@ const avatar = [
       'img/avatars/user07.png',
       'img/avatars/user08.png',
       'img/avatars/user{{xx}}.png',
-      'img/avatars/user{{xx}}.png',
+      'img/avatars/user{{xx}}.png'
 ];
 
+const TITLE = ['title_1', 'title_2', 'title_3', 'title_4', 'title_5', 'title_6', 'title_7', 'title_8', 'title_9', 'title_10'];
 
-const title = [
-      'title_1',
-      'title_2',
-      'title_3',
-      'title_4',
-      'title_5',
-      'title_6',
-      'title_7',
-      'title_8',
-      'title_9',
-      'title_10',
+const ADDRESS = [
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}',
+      '{{location.x}}, {{location.y}}'
 ];
 
+const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
-const address = [
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-];
+const CHECKIN = ['12:00', '13:00', '14:00'];
 
-const price = function getRandomPositiveInteger (a, b) {
-    const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-    const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-    const result = Math.random() * (upper - lower + 1) + lower;
+const CHECKOUT = ['12:00', '13:00', '14:00'];
 
-    return Math.floor(result);
-  };
+const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-const type = [
-      'palace'
-      'flat',
-      'house',
-      'bungalow',
-      'hotel',
-];
+const DESCRIPTION = ['desc_1', 'desc_2', 'desc_3', 'desc_4', 'desc_5', 'desc_6', 'desc_7', 'desc_8', 'desc_9', 'desc_10'];
 
-const rooms = function getRandomPositiveInteger (a, b) {
-    const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-    const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-    const result = Math.random() * (upper - lower + 1) + lower;
-
-    return Math.floor(result);
-  };
-
-const guests = function getRandomPositiveInteger (a, b) {
-    const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-    const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-    const result = Math.random() * (upper - lower + 1) + lower;
-
-    return Math.floor(result);
-  };
-
-const checkIn = [
-      '12:00',
-      '13:00',
-      '14:00',
-];
-
-const checkOut = [
-      '12:00',
-      '13:00',
-      '14:00',
-];
-
-const features = [
-      'wifi',
-      'dishwasher',
-      'parking',
-      'washer',
-      'elevator',
-      'conditioner',
-];
-
-const description = [
-      'desc_1',
-      'desc_2',
-      'desc_3',
-      'desc_4',
-      'desc_5',
-      'desc_6',
-      'desc_7',
-      'desc_8',
-      'desc_9',
-      'desc_10',
-];
-
-const photos = [
+const PHOTOS = [
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-      'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+      'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const lat = function getRandomPositiveFloat (a, b, digits = 1) {
-    const lower = Math.min(Math.abs(a), Math.abs(b));
-    const upper = Math.max(Math.abs(a), Math.abs(b));
-    const result = Math.random() * (upper - lower) + lower;
+const SIMILAR_OBJECTS_COUNT = 10;
 
-    return result.toFixed(digits);
-  };
+//ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 
- const lng = function getRandomPositiveFloat (a, b, digits = 1) {
-    const lower = Math.min(Math.abs(a), Math.abs(b));
-    const upper = Math.max(Math.abs(a), Math.abs(b));
-    const result = Math.random() * (upper - lower) + lower;
+const getRandomPositiveInteger = (min, max) => {
+  const lower = Math.ceil(Math.abs(min), Math.abs(max));
+  const upper = Math.floor(Math.abs(min), Math.abs(max));
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-    return result.toFixed(digits);
-  };
-
-//ГЕНЕРИРОВАНИЕ ОБЪЕКТА
-
-const createObject = () => {
-  const randomAvatarIndex = getRandomPositiveInteger(0, avatar.length - 1);
-  const randomTitleIndex = getRandomPositiveInteger(0, title.length - 1);
-  const randomAddressIndex = getRandomPositiveInteger(0, address.length - 1);
-  const randomTypeIndex = getRandomPositiveInteger(0, type.length - 1);
-  const randomCheckInIndex = getRandomPositiveInteger(0, checkIn.length - 1);
-  const randomCheckOutIndex = getRandomPositiveInteger(0, checkOut.length - 1);
-  const randomFeaturesIndex = getRandomPositiveInteger(0, features.length - 1) // не доработано, пока не поняла
-  const randomDescriptionIndex = getRandomPositiveInteger(0, description.length - 1);
-  const randomPhotosIndex = getRandomPositiveInteger(0, photos.length - 1) // не доработано, пока не поняла как
-
-  return {
-    author: avatar[randomAvatarIndex],
-    offer: {
-      title[randomTitleIndex] + ' ' + address[randomAddressIndex] + ' ' + price + ' ' + type[randomTypeIndex] + ' ' + rooms + ' ' + guests + ' ' + checkIn[randomCheckInIndex] + ' ' + checkOut[randomCheckOutIndex] + ' ' + features[randomFeaturesIndex] + ' ' + description[randomDescriptionIndex] + ' ' + photos[randomPhotosIndex]
-    },
-    location: {
-      lat: getRandomPositiveFloat(35.65000, 35.70000, digits = 1),
-      lng: getRandomPositiveFloat(139.70000, 139.80000, digits = 1),
-    },
-  };
+  return Math.floor(result);
 };
 
+const getRandomPositiveFloat = (min, max, digits = 1) => {
+  const lower = Math.min(Math.abs(min), Math.abs(max));
+  const upper = Math.max(Math.abs(min), Math.abs(max));
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-*/
+  return result.toFixed(digits);
+};
+
+const getRandomArrayElement = (array) => {
+  return array[getRandomPositiveInteger(0, array.length - 1)];
+};
+
+const getRandomArrayLength = (array) => array.slice(1, getRandomPositiveInteger(1, array.length));
+
+
+//ГЕНЕРАЦИЯ ОБЪЕКТА
+
+const createObject = (adNumber) => {
+  const result = [];
+
+  for (let i = 1; i <= adNumber; i += 1) {
+
+    const locationX = Number(getRandomPositiveFloat(35.65000, 35.70000, 1));
+    const locationY = Number(getRandomPositiveFloat(139.70000, 139.80000, 1));
+
+    result.push({
+      'author': {
+        'avatar': `img/avatars/user0${i}.png`,
+      },
+      'offer': {
+        'title': getRandomArrayElement(TITLE),
+        'address': `${locationX}, ${locationY}`,
+        'price': getRandomPositiveInteger(PRICE_MIN, PRICE_MAX),
+        'type': getRandomArrayElement(TYPE),
+        'rooms': getRandomPositiveInteger(ROOMS_MIN, ROOMS_MAX),
+        'guests': getRandomPositiveInteger(GUESTS_MIN, GUESTS_MAX),
+        'checkin': getRandomArrayElement(CHECKIN),
+        'checkout': getRandomArrayElement(CHECKOUT),
+        'features': getRandomArrayLength(FEATURES),
+        'description': getRandomArrayElement(DESCRIPTION),
+        'photos': getRandomArrayLength(PHOTOS),
+      },
+      'location': {
+        'lat': locationX,
+        'lng': locationY,
+      },
+    });
+  }
+  return result;
+};
+
+createObject(10);
