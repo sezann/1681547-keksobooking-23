@@ -1,31 +1,18 @@
 //ДАННЫЕ
 
-const AVATAR = [
-      'img/avatars/user01.png',
-      'img/avatars/user02.png',
-      'img/avatars/user03.png',
-      'img/avatars/user04.png',
-      'img/avatars/user05.png',
-      'img/avatars/user06.png',
-      'img/avatars/user07.png',
-      'img/avatars/user08.png',
-      'img/avatars/user{{xx}}.png',
-      'img/avatars/user{{xx}}.png'
-];
-
-const TITLE = ['title_1', 'title_2', 'title_3', 'title_4', 'title_5', 'title_6', 'title_7', 'title_8', 'title_9', 'title_10'];
+const TITLE = ['Кандинский', 'Save The Rave', 'Guilty Pleasure', 'Three Little Pigs', 'Matrix', 'Back in USSR', 'Poker Face', 'Tokio Dreams', 'Хогвартс', 'Преступление и наказание'];
 
 const ADDRESS = [
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}',
-      '{{location.x}}, {{location.y}}'
+      '35.67861, 139.75819',
+      '35.65253, 139.70217',
+      '35.68412, 139.76094',
+      '35.69493, 139.74379',
+      '35.65725, 139.70495',
+      '35.66351, 139.71302',
+      '35.68119, 139.79325',
+      '35.67374, 139.70203',
+      '35.66443, 139.78504',
+      '35.69815, 139.73552'
 ];
 
 const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -36,7 +23,7 @@ const CHECKOUT = ['12:00', '13:00', '14:00'];
 
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-const DESCRIPTION = ['desc_1', 'desc_2', 'desc_3', 'desc_4', 'desc_5', 'desc_6', 'desc_7', 'desc_8', 'desc_9', 'desc_10'];
+const DESCRIPTION = ['Бутик-отель с видом на океан', 'Стильный хостел', 'Квартира с бабушкиным ремонтом', 'Дом с привидениями', 'Японская классика', 'Дворец для трансгендеров и их животных', 'Сахарный отель для рафинированных принцесс', 'Избушка на курьих ножках', 'Бунгало в стиле советского реализма', 'Рай'];
 
 const PHOTOS = [
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
@@ -44,9 +31,9 @@ const PHOTOS = [
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const SIMILAR_OBJECTS_COUNT = 10;
 
 //ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+
 
 const getRandomPositiveInteger = (min, max) => {
   const lower = Math.ceil(Math.abs(min), Math.abs(max));
@@ -68,12 +55,15 @@ const getRandomArrayElement = (array) => {
   return array[getRandomPositiveInteger(0, array.length - 1)];
 };
 
-const getRandomArrayLength = (array) => array.slice(1, getRandomPositiveInteger(1, array.length));
+const getRandomArrayLength = (array) => array.slice(1, getRandomPositiveInteger(1, array.length - 1));
+
+const SIMILAR_ADS = createAd(10);
 
 
 //ГЕНЕРАЦИЯ ОБЪЕКТА
 
-const createObject = (adNumber) => {
+
+const createAd = (adNumber) => {
   const result = [];
 
   for (let i = 1; i <= adNumber; i += 1) {
@@ -106,5 +96,3 @@ const createObject = (adNumber) => {
   }
   return result;
 };
-
-createObject(10);
