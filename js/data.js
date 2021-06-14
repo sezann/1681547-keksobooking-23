@@ -1,3 +1,5 @@
+import {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArrayLength} from './utils.js';
+
 const TITLE = ['Кандинский', 'Save The Rave', 'Guilty Pleasure', 'Three Little Pigs', 'Matrix', 'Back in USSR', 'Poker Face', 'Tokio Dreams', 'Хогвартс', 'Преступление и наказание'];
 
 const ADDRESS = [
@@ -29,4 +31,41 @@ const PHOTOS = [
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-export {TITLE, ADDRESS, TYPE, CHECKIN, CHECKOUT, FEATURES, DESCRIPTION, PHOTOS};
+const CREATE_AD = (adNumber) => {
+  const result = [];
+
+  for (let i = 1; i <= adNumber; i += 1) {
+
+    const locationX = Number(getRandomPositiveFloat(35.65000, 35.70000, 1));
+    const locationY = Number(getRandomPositiveFloat(139.70000, 139.80000, 1));
+
+    result.push({
+      'author': {
+        'avatar': `img/avatars/user0${i}.png`,
+      },
+      'offer': {
+        'title': getRandomArrayElement(TITLE),
+        'address': `${locationX}, ${locationY}`,
+        'price': getRandomPositiveInteger(PRICE_MIN, PRICE_MAX),
+        'type': getRandomArrayElement(TYPE),
+        'rooms': getRandomPositiveInteger(ROOMS_MIN, ROOMS_MAX),
+        'guests': getRandomPositiveInteger(GUESTS_MIN, GUESTS_MAX),
+        'checkin': getRandomArrayElement(CHECKIN),
+        'checkout': getRandomArrayElement(CHECKOUT),
+        'features': getRandomArrayLength(FEATURES),
+        'description': getRandomArrayElement(DESCRIPTION),
+        'photos': getRandomArrayLength(PHOTOS),
+      },
+      'location': {
+        'lat': locationX,
+        'lng': locationY,
+      },
+    });
+  }
+  return result;
+};
+
+
+
+
+export {CREATE_AD};
