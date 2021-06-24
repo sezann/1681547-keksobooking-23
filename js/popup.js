@@ -5,18 +5,19 @@ const similarAdTemplateElement = document.querySelector('#card');
 const similarAdTemplate = similarAdTemplateElement.content.querySelector('.popup');
 const similarAds = CREATE_AD();
 
-const renderFeatures = (data) => {
+const renderFeatures = (adElement, features) => {
   const featureListElement = adElement.querySelector('.popup__features');
   featureListElement.innerHTML = '';
 
   features.forEach((item) => {
-    const li = document.createElement('li');
-    li.classList.add(item);
-    featureListElement.appendChild(li);
+    const featureElement = document.createElement('li');
+    featureElement.classList.add('popup__feature');
+    featureElement.classList.add(`popup__feature--${item}`);
+    featureListElement.appendChild(featureElement);
   });
 };
 
-const renderPhotos = (data) => {
+const renderPhotos = (adElement, photos) => {
   const photosListElement = adElement.querySelector('.popup__photos');
   photosListElement.innerHTML = '';
 
