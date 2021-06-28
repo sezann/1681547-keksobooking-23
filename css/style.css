@@ -255,6 +255,10 @@ fieldset {
   font-weight: 700;
 }
 
+.notice input:invalid {
+  border: 2px solid #ff5635;
+}
+
 .ad-form {
   display: -webkit-box;
   display: -ms-flexbox;
