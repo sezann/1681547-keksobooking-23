@@ -1,3 +1,5 @@
+import './data.js';
+
 // Заголовок объявления
 
 const formTitle = document.querySelector('#title');
@@ -22,17 +24,16 @@ formTitle.addEventListener('input', () => {
 
 // Количество комнат и количество мест
 
-const roomsValue = document.querySelector('#room_number');
+const roomsValueSelect = document.querySelector('#room_number');
 const guestsCapacity = document.querySelector('#capacity');
 
-roomsValue = {
+const roomsValue = {
   1: [1],
   2: [1,2],
   3: [1,2,3],
   100: [0],
 };
 
-roomsValue. addEventListener ('change', () => {
   const onRoomChange = (evt) => {
     guestsCapacity.forEach((option) => {
       option.disabled = true;
@@ -46,26 +47,44 @@ roomsValue. addEventListener ('change', () => {
       });
     });
   };
-    roomsValue.reportValidity();
-});
+
+roomsValueSelect.addEventListener ('change', onRoomChange);
 
 // тип жилья и цена за ночь
 
 const price = document.querySelector('#price');
 const typeOfHouseSelect = document.querySelector('#type');
 
-const MinPriceForNight = {
+const minPriceForNight = {
   Бунгало: 0,
   Квартира: 1000,
   Отель: 3000,
   Дом: 5000,
   Дворец: 10000,
-}
+};
 
-typeOfHouseSelect.addEventListener('change', () => {
-  const onTypeOfHouseChange = () => {
-    const typeOfHouse = typeOfHouseSelect.value;
-    price.setAttribute('min', MinPriceForNight[typeOfHouse]);
-    price.placeholder = MinPriceForNight[typeOfHouse];
-  };
+const onTypeOfHouseChange = () => {
+  const typeOfHouse = typeOfHouseSelect.value;
+  price.setAttribute('min', minPriceForNight[typeOfHouse]);
+  price.placeholder = minPriceForNight[typeOfHouse];
+};
+
+typeOfHouseSelect.addEventListener('change', onTypeOfHouseChange);
+
+// время заезда и выезда
+
+const checkIn = document.querySelector('#timein');
+const checkOut = document.querySelector('#timeout');
+
+
+checkIn.addEventListener('change', (evt) => {
+  checkIn.value = evt.target.value;
+  checkOut.value = evt.target.value;
 });
+
+checkOut.addEventListener('change', (evt) => {
+  checkOut.value = evt.target.value;
+  checkIn.value = evt.target.value;
+});
+
+export {formTitle, typeOfHouseSelect, roomsValueSelect, checkIn, checkOut};

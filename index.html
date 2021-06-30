@@ -91,15 +91,15 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" placeholder="35.68952, 139.69203">
+          <input id="address" name="address" type="number" placeholder="35.68952, 139.69203">
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
           <select id="type" name="type">
             <option value="bungalow">Бунгало</option>
-            <option value="flat" selected>Квартира</option>
+            <option value="flat">Квартира</option>
             <option value="hotel">Отель</option>
-            <option value="house">Дом</option>
+            <option value="house" selected>Дом</option>
             <option value="palace">Дворец</option>
           </select>
         </fieldset>
@@ -231,5 +231,6 @@
   </template>
 
   <script type="module" src="js/main.js"></script>
+
 </body>
 </html>
