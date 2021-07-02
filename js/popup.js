@@ -1,9 +1,6 @@
-import {CREATE_AD} from './data.js';
-
 const notice = document.querySelector('#map-canvas');
 const similarAdTemplateElement = document.querySelector('#card');
 const similarAdTemplate = similarAdTemplateElement.content.querySelector('.popup');
-const similarAds = CREATE_AD();
 
 const renderFeatures = (adElement, features) => {
   const featureListElement = adElement.querySelector('.popup__features');
@@ -28,7 +25,7 @@ const renderPhotos = (adElement, photos) => {
   });
 };
 
-const createCard = (data) => {
+const createCard = ({author, offer}) => {
     const adElement = similarAdTemplate.cloneNode(true);
     adElement.querySelector('.popup__avatar').src = author.avatar;
     adElement.querySelector('.popup__title').textContent = offer.title;
@@ -38,15 +35,14 @@ const createCard = (data) => {
     adElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
     adElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
     adElement.querySelector('.popup__description').textContent = offer.description;
-    renderFeatures(featureListElement, features);
-    renderPhotos(photosListElement, photos);
+    renderFeatures(adElement, offer.features);
+    renderPhotos(adElement, offer.photos);
 
     return adElement;
 };
 
-const renderCard = (createCard) => {
-    const similarListFragment = document.createDocumentFragment();
-    notice.appendChild(similarListFragment, createCard(data));
+const renderCard = (container, data) => {
+    container.appendChild(createCard(data));
 };
 
 export {renderCard};

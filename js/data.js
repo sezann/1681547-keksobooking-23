@@ -16,15 +16,16 @@ const ADDRESS = [
 ];
 
 const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-
+const PRICE_MIN = 0;
+const PRICE_MAX = 1000000;
+const ROOMS_MIN = 1;
+const ROOMS_MAX = 100;
+const GUESTS_MIN = 0;
+const GUESTS_MAX = 3;
 const CHECKIN = ['12:00', '13:00', '14:00'];
-
 const CHECKOUT = ['12:00', '13:00', '14:00'];
-
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
 const DESCRIPTION = ['Бутик-отель с видом на океан', 'Стильный хостел', 'Квартира с бабушкиным ремонтом', 'Дом с привидениями', 'Японская классика', 'Дворец для трансгендеров и их животных', 'Сахарный отель для рафинированных принцесс', 'Избушка на курьих ножках', 'Бунгало в стиле советского реализма', 'Рай'];
-
 const PHOTOS = [
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
       'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
