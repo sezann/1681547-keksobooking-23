@@ -1,4 +1,3 @@
-const notice = document.querySelector('#map-canvas');
 const similarAdTemplateElement = document.querySelector('#card');
 const similarAdTemplate = similarAdTemplateElement.content.querySelector('.popup');
 
@@ -25,7 +24,7 @@ const renderPhotos = (adElement, photos) => {
   });
 };
 
-const createCard = ({author, offer}) => {
+const createCard = ({author,offer}) => {
     const adElement = similarAdTemplate.cloneNode(true);
     adElement.querySelector('.popup__avatar').src = author.avatar;
     adElement.querySelector('.popup__title').textContent = offer.title;
@@ -45,4 +44,4 @@ const renderCard = (container, data) => {
     container.appendChild(createCard(data));
 };
 
-export {renderCard};
+export {createCard, renderCard};
