@@ -1,11 +1,14 @@
 import {CREATE_AD} from './data.js';
 import {createCard, renderCard} from './popup.js'
 
-const address = document.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
+const LOCATION_DIGITS_AMOUNT = 5;
+const defaultCoordsLat = 35.68952;
+const defaultCoordsLng = 139.69203;
 
 const data = CREATE_AD(8);
 
+const address = document.querySelector('#address');
+const resetButton = document.querySelector('.ad-form__reset');
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -25,7 +28,7 @@ const map = L.map('map-canvas')
 
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: '/img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
@@ -49,7 +52,7 @@ const createMarker = (point) => {
   const {lat, lng} = point;
 
   const icon = L.icon({
-    iconUrl: '../img/pin.svg',
+    iconUrl: '/img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
@@ -78,11 +81,6 @@ const createMarker = (point) => {
     createMarker(point)
   });
 
-
-  mainPinMarker.on('moveend', (evt) => {
-    address.setAttribute('placeholder', evt.target.getLatLng());
-  });
-
   resetButton.addEventListener('click', () => {
     mainPinMarker.setLatLng({
       lat: 35.689,
@@ -94,5 +92,17 @@ const createMarker = (point) => {
       lng: 139.692,
     }, 13);
 
-    address.setAttribute('placeholder', '35.68952, 139.69203');
+    address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
   });
+
+  const getMainPinCoords = () => {
+    address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+
+    mainPinMarker.on('moveend', (evt) => {
+      const newCoordLat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
+      const newCoordLng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
+      address.setAttribute('placeholder', `${newCoordLat}, ${newCoordLng}`);
+    });
+  };
+
+  getMainPinCoords();
