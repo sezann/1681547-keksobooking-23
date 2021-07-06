@@ -2,17 +2,19 @@ import {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement,
 
 const TITLE = ['Кандинский', 'Save The Rave', 'Guilty Pleasure', 'Three Little Pigs', 'Matrix', 'Back in USSR', 'Poker Face', 'Tokio Dreams', 'Хогвартс', 'Преступление и наказание'];
 
-const ADDRESS = [
-      '35.67861, 139.75819',
-      '35.65253, 139.70217',
-      '35.68412, 139.76094',
-      '35.69493, 139.74379',
-      '35.65725, 139.70495',
-      '35.66351, 139.71302',
-      '35.68119, 139.79325',
-      '35.67374, 139.70203',
-      '35.66443, 139.78504',
-      '35.69815, 139.73552',
+const AVATAR = [
+  '../img/avatars/user01.png',
+  '../img/avatars/user02.png',
+  '../img/avatars/user03.png',
+  '../img/avatars/user04.png',
+  '../img/avatars/user05.png',
+  '../img/avatars/user06.png',
+  '../img/avatars/user07.png',
+  '../img/avatars/user08.png',
+  '../img/avatars/user09.png',
+  '../img/avatars/user10.png',
+  '../img/avatars/user11.png',
+  '../img/avatars/default.png',
 ];
 
 const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -40,9 +42,10 @@ const CREATE_AD = (adNumber) => {
     const locationX = Number(getRandomPositiveFloat(35.65000, 35.70000, 5));
     const locationY = Number(getRandomPositiveFloat(139.70000, 139.80000, 5));
 
+
     result.push({
       'author': {
-        'avatar': `../img/avatars/user0${i}.png`,
+        'avatar': getRandomArrayElement(AVATAR),
       },
       'offer': {
         'title': getRandomArrayElement(TITLE),
@@ -63,8 +66,5 @@ const CREATE_AD = (adNumber) => {
   }
   return result;
 };
-
-
-
 
 export {CREATE_AD};

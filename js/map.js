@@ -1,5 +1,5 @@
 import {CREATE_AD} from './data.js';
-import {createCard, renderCard} from './popup.js'
+import {createCard, renderCard} from './popup.js';
 
 const LOCATION_DIGITS_AMOUNT = 5;
 const defaultCoordsLat = 35.68952;
@@ -78,7 +78,7 @@ const createMarker = (point) => {
   };
 
   data.forEach((point) => {
-    createMarker(point)
+    createMarker(point);
   });
 
   resetButton.addEventListener('click', () => {
@@ -106,3 +106,4 @@ const createMarker = (point) => {
   };
 
   getMainPinCoords();
+

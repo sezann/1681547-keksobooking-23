@@ -1,3 +1,5 @@
+import {CREATE_AD} from './data.js';
+
 const similarAdTemplateElement = document.querySelector('#card');
 const similarAdTemplate = similarAdTemplateElement.content.querySelector('.popup');
 
@@ -24,20 +26,20 @@ const renderPhotos = (adElement, photos) => {
   });
 };
 
-const createCard = ({author,offer}) => {
-    const adElement = similarAdTemplate.cloneNode(true);
-    adElement.querySelector('.popup__avatar').src = author.avatar;
-    adElement.querySelector('.popup__title').textContent = offer.title;
-    adElement.querySelector('.popup__text--address').textContent = offer.address;
-    adElement.querySelector('.popup__text--price').textContent = `${offer.price}₽/ночь`;
-    adElement.querySelector('.popup__type').textContent = offer.type;
-    adElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-    adElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-    adElement.querySelector('.popup__description').textContent = offer.description;
-    renderFeatures(adElement, offer.features);
-    renderPhotos(adElement, offer.photos);
+const createCard = ({author, offer}) => {
+  const adElement = similarAdTemplate.cloneNode(true);
+  adElement.querySelector('.popup__avatar').src = author.avatar;
+  adElement.querySelector('.popup__title').textContent = offer.title;
+  adElement.querySelector('.popup__text--address').textContent = offer.address;
+  adElement.querySelector('.popup__text--price').textContent = `${offer.price}₽/ночь`;
+  adElement.querySelector('.popup__type').textContent = offer.type;
+  adElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+  adElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  adElement.querySelector('.popup__description').textContent = offer.description;
+  renderFeatures(adElement, offer.features);
+  renderPhotos(adElement, offer.photos);
 
-    return adElement;
+  return adElement;
 };
 
 const renderCard = (container, data) => {

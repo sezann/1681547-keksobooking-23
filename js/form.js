@@ -72,9 +72,9 @@ typeOfHouseSelect.addEventListener('change', onTypeOfHouseChange);
 // Время заезда и выезда
 
 checkIn.addEventListener('change', () => {
-  checkOut.value =  checkIn.value
+  checkOut.value =  checkIn.value;
 });
 
 checkOut.addEventListener('change', () => {
-  checkIn.value = checkOut.value
+  checkIn.value = checkOut.value;
 });
