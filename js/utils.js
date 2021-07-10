@@ -17,9 +17,8 @@ const getRandomArrayElement = (array) => {
 
 const getRandomArrayLength = (array) => array.slice(1, getRandomPositiveInteger(1, array.length - 1));
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArrayLength};
-
-//--------------------------------------------------------------------------------------//
+//Активная и неактивная форма
+//=========================================================================================//
 
 const adForm = document.querySelector('.ad-form');
 const adFieldset = document.querySelector('.ad-form__element');
@@ -44,4 +43,26 @@ const toActivate = () => {
 };
 
 toActivate();
+
+
+//Блоки с сообщением об успехе и ошибке
+//========================================================================================//
+
+const successCard = () => {
+  const successMessage = `<div class="success">
+  <p class="success__message">Ваше объявление<br>успешно размещено!</p>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', successMessage);
+};
+
+const errorCard = () => {
+  const errorMessage = `<div class="error">
+  <p class="error__message">Ошибка размещения объявления</p>
+  <button type="button" class="error__button">Попробовать снова</button>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', errorMessage);
+};
+
+export {successCard, errorCard};
+
 

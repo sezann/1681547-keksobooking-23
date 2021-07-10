@@ -1,6 +1,7 @@
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
+const adForm = document.querySelector('.ad-form');
 const formTitle = document.querySelector('#title');
 const roomsValueSelect = document.querySelector('#room_number');
 const guestsCapacity = document.querySelectorAll('#capacity option');
