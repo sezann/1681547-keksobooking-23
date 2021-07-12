@@ -1,14 +1,20 @@
+import {sendData} from './api.js';
+import {successCard, errorCard} from './modal.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
 const adForm = document.querySelector('.ad-form');
-const formTitle = document.querySelector('#title');
-const roomsValueSelect = document.querySelector('#room_number');
-const guestsCapacity = document.querySelectorAll('#capacity option');
-const price = document.querySelector('#price');
-const typeOfHouseSelect = document.querySelector('#type');
-const checkIn = document.querySelector('#timein');
-const checkOut = document.querySelector('#timeout');
+const formTitle = adForm.querySelector('#title');
+const address = adForm.querySelector('#address');
+const roomsValueSelect = adForm.querySelector('#room_number');
+const guestsCapacity = adForm.querySelectorAll('#capacity option');
+const price = adForm.querySelector('#price');
+const typeOfHouseSelect = adForm.querySelector('#type');
+const checkIn = adForm.querySelector('#timein');
+const checkOut = adForm.querySelector('#timeout');
+const submitButton = adForm.querySelector('.ad-form__submit');
+const resetButton = adForm.querySelector('.ad-form__reset');
 
 const roomsValue = {
   1: [1],
@@ -79,3 +85,30 @@ checkIn.addEventListener('change', () => {
 checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
+
+// Сброс полей
+
+resetButton.addEventListener('click', (evt) => {
+  adForm.reset();
+});
+
+submitButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  adForm.reset();
+});
+
+// Отправка данных
+
+const setFormSubmit = (sendData, onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+  sendData(
+    () => onSuccess(),
+    () => errorCard(),
+    new FormData(evt.target),
+    );
+  });
+};
+
+export {setFormSubmit};

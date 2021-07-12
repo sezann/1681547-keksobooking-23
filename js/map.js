@@ -6,6 +6,7 @@ const defaultCoordsLng = 139.69203;
 
 const address = document.querySelector('#address');
 const resetButton = document.querySelector('.ad-form__reset');
+const submitButton = document.querySelector('.ad-form__submit');
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -64,7 +65,7 @@ const createMarker = (point) => {
     },
   );
 
-    marker
+  marker
     .addTo(markerGroup)
     .bindPopup(
       createCard(point),
@@ -72,34 +73,38 @@ const createMarker = (point) => {
         keepInView: true,
       },
     );
-  };
+};
 
-  resetButton.addEventListener('click', () => {
-    mainPinMarker.setLatLng({
-      lat: defaultCoordsLat,
-      lng: defaultCoordsLng,
-    });
-
-    map.setView({
-      lat: defaultCoordsLat,
-      lng: defaultCoordsLng,
-    }, 13);
-
-    address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+const mainPinDefault = () => {
+  mainPinMarker.setLatLng({
+    lat: defaultCoordsLat,
+    lng: defaultCoordsLng,
   });
 
-  const getMainPinCoords = () => {
-    address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
-    address.setAttribute('value', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+  map.setView({
+    lat: defaultCoordsLat,
+    lng: defaultCoordsLng,
+  }, 13);
 
-    mainPinMarker.on('moveend', (evt) => {
-      const newCoordLat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
-      const newCoordLng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
-      address.setAttribute('placeholder', `${newCoordLat}, ${newCoordLng}`);
-      address.setAttribute('value', `${newCoordLat}, ${newCoordLng}`);
-    });
-  };
+  address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+  address.setAttribute('value', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+};
 
-  getMainPinCoords();
+mainPinMarker.on('moveend', (evt) => {
+  const newCoordsLat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
+  const newCoordsLng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
+  address.setAttribute('placeholder', `${newCoordsLat}, ${newCoordsLng}`);
+  address.setAttribute('value', `${newCoordsLat}, ${newCoordsLng}`);
+});
 
-  export {createMarker, getMainPinCoords};
+submitButton.addEventListener('click', () => {
+  mainPinDefault();
+});
+
+resetButton.addEventListener('click', () => {
+  mainPinDefault();
+});
+
+mainPinDefault();
+
+export {createMarker, mainPinDefault};

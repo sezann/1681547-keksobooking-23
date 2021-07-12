@@ -3,8 +3,13 @@ const similarAdTemplate = similarAdTemplateElement.content.querySelector('.popup
 
 const renderFeatures = (adElement, features) => {
   const featureListElement = adElement.querySelector('.popup__features');
-  featureListElement.innerHTML = '';
 
+  if(!features) {
+    featureListElement.remove();
+    return;
+  };
+
+  featureListElement.innerHTML = '';
   features.forEach((item) => {
     const featureElement = document.createElement('li');
     featureElement.classList.add('popup__feature');
@@ -15,9 +20,13 @@ const renderFeatures = (adElement, features) => {
 
 const renderPhotos = (adElement, photos) => {
   const photosListElement = adElement.querySelector('.popup__photos');
+
+  if(!photos) {
+    photosListElement.remove();
+    return;
+  };
+
   photosListElement.innerHTML = '';
-
-
   photos.forEach((url) => {
     const img = document.createElement('img');
     img.classList.add('popup__photo');
