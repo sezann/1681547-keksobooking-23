@@ -1,22 +1,20 @@
-import {CREATE_AD} from './data.js';
-import {createCard, renderCard} from './popup.js'
+import {createCard, renderFeatures, renderPhotos} from './popup.js';
 
 const LOCATION_DIGITS_AMOUNT = 5;
 const defaultCoordsLat = 35.68952;
 const defaultCoordsLng = 139.69203;
 
-const data = CREATE_AD(8);
-
 const address = document.querySelector('#address');
 const resetButton = document.querySelector('.ad-form__reset');
+const submitButton = document.querySelector('.ad-form__submit');
 
 const map = L.map('map-canvas')
   .on('load', () => {
     console.log('Карта инициализирована');
   })
   .setView({
-    lat: 35.689,
-    lng: 139.692,
+    lat: defaultCoordsLat,
+    lng: defaultCoordsLng,
   }, 13);
 
   L.tileLayer(
@@ -35,8 +33,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: 35.688,
-    lng: 139.692,
+    lat: defaultCoordsLat,
+    lng: defaultCoordsLng,
   },
   {
     draggable: true,
@@ -49,7 +47,7 @@ mainPinMarker.addTo(map);
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = (point) => {
-  const {lat, lng} = point;
+  const {lat, lng} = point.location;
 
   const icon = L.icon({
     iconUrl: 'img/pin.svg',
@@ -67,7 +65,7 @@ const createMarker = (point) => {
     },
   );
 
-    marker
+  marker
     .addTo(markerGroup)
     .bindPopup(
       createCard(point),
@@ -75,34 +73,38 @@ const createMarker = (point) => {
         keepInView: true,
       },
     );
-  };
+};
 
-  data.forEach((point) => {
-    createMarker(point)
+const mainPinDefault = () => {
+  mainPinMarker.setLatLng({
+    lat: defaultCoordsLat,
+    lng: defaultCoordsLng,
   });
 
-  resetButton.addEventListener('click', () => {
-    mainPinMarker.setLatLng({
-      lat: 35.689,
-      lng: 139.692,
-    });
+  map.setView({
+    lat: defaultCoordsLat,
+    lng: defaultCoordsLng,
+  }, 13);
 
-    map.setView({
-      lat: 35.689,
-      lng: 139.692,
-    }, 13);
+  address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+  address.setAttribute('value', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+};
 
-    address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
-  });
+mainPinMarker.on('moveend', (evt) => {
+  const newCoordsLat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
+  const newCoordsLng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
+  address.setAttribute('placeholder', `${newCoordsLat}, ${newCoordsLng}`);
+  address.setAttribute('value', `${newCoordsLat}, ${newCoordsLng}`);
+});
 
-  const getMainPinCoords = () => {
-    address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
+submitButton.addEventListener('click', () => {
+  mainPinDefault();
+});
 
-    mainPinMarker.on('moveend', (evt) => {
-      const newCoordLat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
-      const newCoordLng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
-      address.setAttribute('placeholder', `${newCoordLat}, ${newCoordLng}`);
-    });
-  };
+resetButton.addEventListener('click', () => {
+  mainPinDefault();
+});
 
-  getMainPinCoords();
+mainPinDefault();
+
+export {createMarker, mainPinDefault};
