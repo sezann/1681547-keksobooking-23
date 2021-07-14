@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {successCard, errorCard} from './modal.js';
+import {successCard, errorCard, openSuccessCard, openErrorCard} from './user-modal.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -86,16 +86,16 @@ checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
 
-// Сброс полей
+// Filters
 
-resetButton.addEventListener('click', (evt) => {
-  adForm.reset();
-});
+const mapFilters = document.querySelector('.map__filters');
+const mapFilterType = mapFilters.querySelector('#housing-type');
+const mapFilterPrice = mapFilters.querySelector('#housing-price');
+const mapFilterRooms = mapFilters.querySelector('#housing-rooms');
+const mapFilterGuests = mapFilters.querySelector('#housing-guests');
+const mapFilterFeatures = mapFilters.querySelector('#housing-features');
 
-submitButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  adForm.reset();
-});
+
 
 // Отправка данных
 
@@ -108,6 +108,8 @@ const setFormSubmit = (sendData, onSuccess) => {
     () => errorCard(),
     new FormData(evt.target),
     );
+
+    adForm.reset();
   });
 };
 

@@ -1,10 +1,13 @@
 export {isEscEvent} from './utils.js';
 
 const errorButton = document.querySelector('.error__button');
+const successModal = document.createElement('div');
+const errorModal = document.createElement('div');
+
+successModal.classList.add('hidden');
+errorModal.classList.add('hidden');
 
 const successCard = () => {
-  const successModal = document.createElement('div');
-
   const successTemplate = document.querySelector('#success');
   const successTemplateElement = successTemplate.content.querySelector('.success');
   const successMessage = successTemplateElement.cloneNode(true);
@@ -12,11 +15,10 @@ const successCard = () => {
   successModal.appendChild(successMessage);
 
   document.body.append(successModal);
+  openSuccessCard();
 };
 
 const errorCard = () => {
-  const errorModal = document.createElement('div');
-
   const errorTemplate = document.querySelector('#error');
   const errorTemplateElement = errorTemplate.content.querySelector('.error');
   const errorMessage = errorTemplateElement.cloneNode(true);
@@ -27,18 +29,38 @@ const errorCard = () => {
   document.body.append(errorModal);
 };
 
-document.addEventListener('keydown', (evt) => {
-  if (!successCard.contains(evt.target) || isEscEvent) {
-    evt.preventDefault();
-    successCard.style.display = 'none';
-  }
-});
+function openSuccessCard () {
+  successModal.classList.remove('hidden');
+  document.addEventListener('keydown', onCloseSuccessCard);
+};
 
-document.addEventListener('keydown', (evt) => {
-  if (!errorCard.contains(evt.target) || isEscEvent || errorButton(evt.target)) {
-    evt.preventDefault();
-    errorCard.style.display = 'none';
-  }
-});
+function closeSuccessCard () {
+  successModal.classList.add('hidden');
+  document.removeEventListener('keydown', onCloseSuccessCard);
+};
 
-export {successCard, errorCard};
+function openErrorCard () {
+  errorModal.classList.remove('hidden');
+  document.addEventListener('keydown', onCloseErrorCard);
+};
+
+function closeErrorCard () {
+  errorModal.classList.add('hidden');
+  document.removeEventListener('keydown', onCloseErrorCard);
+};
+
+const onCloseSuccessCard = (evt) => {
+  if (!successModal.contains(evt.target) || isEscEvent) {
+    evt.preventDefault();
+    closeSuccessCard();
+  }
+};
+
+const onCloseErrorCard = (evt) => {
+  if (!errorModal.contains(evt.target) || isEscEvent || errorButton(evt.target)) {
+    evt.preventDefault();
+    closeErrorCard();
+  }
+};
+
+export {successCard, errorCard, openSuccessCard, openErrorCard};

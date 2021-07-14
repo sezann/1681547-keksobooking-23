@@ -1,6 +1,6 @@
 import './popup.js';
 import './activate-disable.js';
-import {successCard} from './modal.js';
+import {openSuccessCard, successCard} from './user-modal.js';
 import {setFormSubmit} from './form.js';
 import {createMarker} from './map.js';
 import {getData, sendData} from './api.js';
