@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {successCard, errorCard, openSuccessCard, openErrorCard} from './user-modal.js';
+import {successCard, errorCard} from './user-modal.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -50,8 +50,6 @@ const onTypeOfHouseChange = () => {
   price.placeholder = minPriceForNight[typeOfHouseSelect.value];
 };
 
-// Заголовок объявления
-
 formTitle.addEventListener('input', () => {
   const valueLength = formTitle.value.length;
 
@@ -67,16 +65,9 @@ formTitle.addEventListener('input', () => {
     formTitle.reportValidity();
 });
 
-
-// Количество комнат и количество мест
-
 roomsValueSelect.addEventListener ('change', onRoomChange);
 
-// Тип жилья и цена за ночь
-
 typeOfHouseSelect.addEventListener('change', onTypeOfHouseChange);
-
-// Время заезда и выезда
 
 checkIn.addEventListener('change', () => {
   checkOut.value =  checkIn.value;
@@ -85,17 +76,6 @@ checkIn.addEventListener('change', () => {
 checkOut.addEventListener('change', () => {
   checkIn.value = checkOut.value;
 });
-
-// Filters
-
-const mapFilters = document.querySelector('.map__filters');
-const mapFilterType = mapFilters.querySelector('#housing-type');
-const mapFilterPrice = mapFilters.querySelector('#housing-price');
-const mapFilterRooms = mapFilters.querySelector('#housing-rooms');
-const mapFilterGuests = mapFilters.querySelector('#housing-guests');
-const mapFilterFeatures = mapFilters.querySelector('#housing-features');
-
-
 
 // Отправка данных
 
@@ -113,4 +93,15 @@ const setFormSubmit = (sendData, onSuccess) => {
   });
 };
 
-export {setFormSubmit};
+// debounce
+
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {setFormSubmit, debounce};
