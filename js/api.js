@@ -5,10 +5,14 @@ const Url = {
 
 const getData = (onSuccess) => {
   fetch(Url.DATA)
-    .then((response) => response.json())
-    .then((data) => {
-      onSuccess(data);
-  });
+    .then((response => {
+      if(response.ok) {
+        return response.json();
+      }
+      onFail(`Не удалось загрузить объявления`);
+    }))
+    .then(onSuccess)
+    .catch(onFail);
 };
 
 const sendData = (onSuccess, onFail, body) => {
@@ -21,14 +25,11 @@ const sendData = (onSuccess, onFail, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
-      } else {
-        onFail();
+        return onSuccess();
       }
-    })
-    .catch (() => {
       onFail();
-    });
+    })
+    .catch (onFail);
 };
 
 export {getData, sendData};

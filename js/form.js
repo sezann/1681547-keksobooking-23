@@ -1,5 +1,5 @@
 import {sendData} from './api.js';
-import {successCard, errorCard, openSuccessCard, openErrorCard} from './user-modal.js';
+import {successCard, errorCard} from './user-modal.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -46,11 +46,9 @@ const onRoomChange = (evt) => {
 };
 
 const onTypeOfHouseChange = () => {
-  price.setAttribute('min', minPriceForNight[typeOfHouseSelect.value]);
+  price.min = minPriceForNight[typeOfHouseSelect.value];
   price.placeholder = minPriceForNight[typeOfHouseSelect.value];
 };
-
-// Заголовок объявления
 
 formTitle.addEventListener('input', () => {
   const valueLength = formTitle.value.length;
@@ -67,37 +65,25 @@ formTitle.addEventListener('input', () => {
     formTitle.reportValidity();
 });
 
+const onCheckInChange = () => {
+  checkOut.value =  checkIn.value;
+};
 
-// Количество комнат и количество мест
+const onCheckOutChange = () => {
+  checkIn.value = checkOut.value;
+};
 
 roomsValueSelect.addEventListener ('change', onRoomChange);
-
-// Тип жилья и цена за ночь
-
 typeOfHouseSelect.addEventListener('change', onTypeOfHouseChange);
+checkIn.addEventListener('change', onCheckInChange);
+checkOut.addEventListener('change', onCheckOutChange);
 
-// Время заезда и выезда
-
-checkIn.addEventListener('change', () => {
-  checkOut.value =  checkIn.value;
-});
-
-checkOut.addEventListener('change', () => {
-  checkIn.value = checkOut.value;
-});
-
-// Filters
-
-const mapFilters = document.querySelector('.map__filters');
-const mapFilterType = mapFilters.querySelector('#housing-type');
-const mapFilterPrice = mapFilters.querySelector('#housing-price');
-const mapFilterRooms = mapFilters.querySelector('#housing-rooms');
-const mapFilterGuests = mapFilters.querySelector('#housing-guests');
-const mapFilterFeatures = mapFilters.querySelector('#housing-features');
-
-
-
-// Отправка данных
+const onResetForm = () => {
+  onTypeOfHouseChange();
+  onRoomChange();
+  onCheckInChange();
+  onCheckOutChange();
+};
 
 const setFormSubmit = (sendData, onSuccess) => {
   adForm.addEventListener('submit', (evt) => {
@@ -108,9 +94,9 @@ const setFormSubmit = (sendData, onSuccess) => {
     () => errorCard(),
     new FormData(evt.target),
     );
-
     adForm.reset();
   });
 };
 
-export {setFormSubmit};
+
+export {setFormSubmit, onResetForm, resetButton, minPriceForNight, adForm};

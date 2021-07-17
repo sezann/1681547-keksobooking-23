@@ -54,4 +54,4 @@ const createCard = (point) => {
   return adElement;
 };
 
-export {createCard, renderFeatures, renderPhotos};
+export {createCard};
