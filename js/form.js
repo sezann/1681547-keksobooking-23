@@ -1,20 +1,8 @@
 import {sendData} from './api.js';
-import {successCard, errorCard} from './user-modal.js';
 
+const LOCATION_DIGITS_AMOUNT = 5;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
-
-const adForm = document.querySelector('.ad-form');
-const formTitle = adForm.querySelector('#title');
-const address = adForm.querySelector('#address');
-const roomsValueSelect = adForm.querySelector('#room_number');
-const guestsCapacity = adForm.querySelectorAll('#capacity option');
-const price = adForm.querySelector('#price');
-const typeOfHouseSelect = adForm.querySelector('#type');
-const checkIn = adForm.querySelector('#timein');
-const checkOut = adForm.querySelector('#timeout');
-const submitButton = adForm.querySelector('.ad-form__submit');
-const resetButton = adForm.querySelector('.ad-form__reset');
 
 const roomsValue = {
   1: [1],
@@ -30,6 +18,19 @@ const minPriceForNight = {
   house: 5000,
   palace: 10000,
 };
+
+const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
+const formTitle = adForm.querySelector('#title');
+const address = adForm.querySelector('#address');
+const roomsValueSelect = adForm.querySelector('#room_number');
+const guestsCapacity = adForm.querySelectorAll('#capacity option');
+const price = adForm.querySelector('#price');
+const typeOfHouseSelect = adForm.querySelector('#type');
+const checkIn = adForm.querySelector('#timein');
+const checkOut = adForm.querySelector('#timeout');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
 
 const onRoomChange = (evt) => {
   guestsCapacity.forEach((option) => {
@@ -85,18 +86,54 @@ const onResetForm = () => {
   onCheckOutChange();
 };
 
-const setFormSubmit = (sendData, onSuccess) => {
+const toDisableForm = () => {
+  adForm.classList.add('.ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
+    fieldset.classList.add('disabled');
+  });
+
+  mapFilters.classList.add('map__filters--disabled');
+  mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
+    filter.classList.add('disabled');
+  })
+
+  mapFilters.querySelectorAll('.map__features').forEach((feature) => {
+    feature.classList.add('disabled');
+  })
+};
+
+const toEnableForm = () => {
+  adForm.classList.remove('.ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
+    fieldset.classList.remove('disabled');
+  });
+
+  mapFilters.classList.remove('map__filters--disabled');
+  mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
+    filter.classList.remove('disabled');
+  })
+
+  mapFilters.querySelectorAll('.map__features').forEach((feature) => {
+    feature.classList.remove('disabled');
+  })
+};
+
+const addressInput = (lat, lng) => {
+  const latitude = lat.toFixed(LOCATION_DIGITS_AMOUNT);
+  const longitude = lng.toFixed(LOCATION_DIGITS_AMOUNT);
+  address.value = `${latitude} ${longitude}`;
+};
+
+const setFormSubmit = (onSuccess, onError) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
   sendData(
-    () => onSuccess(),
-    () => errorCard(),
+    onSuccess(),
+    onError(),
     new FormData(evt.target),
     );
-    adForm.reset();
   });
 };
 
-
-export {setFormSubmit, onResetForm, resetButton, minPriceForNight, adForm};
+export {setFormSubmit, onResetForm, toDisableForm, toEnableForm, addressInput, LOCATION_DIGITS_AMOUNT, resetButton, adForm};

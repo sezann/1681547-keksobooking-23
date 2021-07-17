@@ -1,5 +1,5 @@
-import {removeMarkers, renderCards} from "./map";
-import {debounce} from "./utils";
+import {removeMarkers, renderCards} from './map.js';
+import {debounce} from './utils.js';
 
 const RERENDER_DELAY = 500;
 const USER_OPTION = 'any';
@@ -13,6 +13,7 @@ const filterPrice = mapFilters.querySelector('#housing-price');
 const filterRooms = mapFilters.querySelector('#housing-rooms');
 const filterGuests = mapFilters.querySelector('#housing-guests');
 const filterFeatures = mapFilters.querySelector('#housing-features');
+const filterElements = mapFilters.elements;
 const mapFeatures = mapFilters.querySelector('.map__features');
 
 const toDisableFilters = () => {
@@ -79,7 +80,8 @@ const getFilteredPoints = (data) => {
       userFilterGuests(point) &&
       userFilterFeatures(point)
     );
-  });
+  })
+  return filteredPoints;
 };
 
 const onFilterChange = (data) => {
@@ -95,4 +97,4 @@ const setFilterChange = (data) => {
   mapFilters.addEventListener('change', onFilterChange(data));
 };
 
-export {toEnableFilters, toDisableFilters, mapFilters, setFilterChange};
+export {toEnableFilters, toDisableFilters, setFilterChange, mapFilters};

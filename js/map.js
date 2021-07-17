@@ -1,25 +1,24 @@
 import {createCard} from './popup.js';
 import {toEnableFilters} from './filter.js';
-import {onResetForm, resetButton} from './form.js';
+import {toEnableForm, onResetForm, addressInput} from './form.js';
 
-const LOCATION_DIGITS_AMOUNT = 5;
 const defaultCoordsLat = 35.68952;
 const defaultCoordsLng = 139.69203;
 const defaultZoom = 13;
 
-const address = document.querySelector('#address');
-const submitButton = document.querySelector('.ad-form__submit');
-
 const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
 
 const onMapLoad = () => {
+  toEnableForm();
   toEnableFilters();
-  mainPinAddress();
+  addressInput(defaultCoordsLat, defaultCoordsLng);
   onResetForm();
 };
 
-const setUpMap = () => {
-  map.on('load',onMapLoad)
+const setUpMap = (data) => {
+  map
+  .on('load',onMapLoad)
   .setView({
     lat: defaultCoordsLat,
     lng: defaultCoordsLng,
@@ -35,9 +34,7 @@ const setUpMap = () => {
   renderCards(data);
 };
 
-const markerGroup = L.layerGroup().addTo(map);
-
-const initMainPinMarker = () => {
+const setUpMainPinMarker = () => {
   const mainPinIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
     iconSize: [52, 52],
@@ -57,17 +54,19 @@ const initMainPinMarker = () => {
   return mainPinMarker;
 };
 
-const mainPinMarker = initMainPinMarker();
+const mainPinMarker = setUpMainPinMarker();
 
 mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
-  const newCoordsLat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
-  const newCoordsLng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
-  address.setAttribute('placeholder', `${newCoordsLat}, ${newCoordsLng}`);
-  address.setAttribute('value', `${newCoordsLat}, ${newCoordsLng}`);
+  const lat = (evt.target.getLatLng().lat).toFixed(LOCATION_DIGITS_AMOUNT);
+  const lng = (evt.target.getLatLng().lng).toFixed(LOCATION_DIGITS_AMOUNT);
+  addressInput(lat, lng);
 });
 
+const resetMainPinMarker = () => {
+  mainPinMarker.setLatLng(L.latLng(defaultCoordsLat, defaultCoordsLng));
+};
 
 const createMarker = (point) => {
   const {lat, lng} = point.location;
@@ -104,32 +103,10 @@ const renderCards = (data) => {
   })
 };
 
-const mainPinAddress = () => {
-  mainPinMarker.setLatLng({
-    lat: defaultCoordsLat,
-    lng: defaultCoordsLng,
-  });
-
-  map.setView({
-    lat: defaultCoordsLat,
-    lng: defaultCoordsLng,
-  }, 13);
-
-  address.setAttribute('placeholder', `${defaultCoordsLat}, ${defaultCoordsLng}`);
-  address.setAttribute('value', `${defaultCoordsLat}, ${defaultCoordsLng}`);
-};
-
-submitButton.addEventListener('click', () => {
-  mainPinAddress();
-});
-resetButton.addEventListener('click', () => {
-  mainPinAddress();
-});
-
 const removeMarkers = () => {
   markerGroup.forEach((marker) => {
     marker.remove();
   })
 };
 
-export {renderCards, setUpMap, removeMarkers, mainPinAddress};
+export {renderCards, setUpMap, removeMarkers, resetMainPinMarker, defaultCoordsLat, defaultCoordsLng};

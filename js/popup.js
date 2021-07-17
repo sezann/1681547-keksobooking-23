@@ -40,6 +40,7 @@ const renderPhotos = (adElement, photos) => {
 
 const createCard = (point) => {
   const adElement = similarAdTemplate.cloneNode(true);
+
   adElement.querySelector('.popup__avatar').src = point.author.avatar;
   adElement.querySelector('.popup__title').textContent = point.offer.title;
   adElement.querySelector('.popup__text--address').textContent = point.offer.address;

@@ -3,7 +3,7 @@ const Url = {
   DATA: 'https://23.javascript.pages.academy/keksobooking/data',
 };
 
-const getData = (onSuccess) => {
+const getData = (onSuccess, onFail) => {
   fetch(Url.DATA)
     .then((response => {
       if(response.ok) {

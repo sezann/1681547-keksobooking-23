@@ -5,14 +5,6 @@ const getRandomPositiveInteger = (min, max) => {
   return Math.floor(rand);
 };
 
-const getRandomPositiveFloat = (min, max, digits) => {
-  const lower = Math.min(Math.abs(min), Math.abs(max));
-  const upper = Math.max(Math.abs(min), Math.abs(max));
-  const randFloat = Math.random() * (upper - lower) + lower;
-
-  return randFloat.toFixed(digits);
-};
-
 const getRandomArrayElement = (array) => {
   return array[getRandomPositiveInteger(0, array.length - 1)];
 };

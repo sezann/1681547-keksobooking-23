@@ -1,3 +1,4 @@
+
 const successCard = () => {
   const successTemplate = document.querySelector('#success');
   const successTemplateElement = successTemplate.content.querySelector('.success');
@@ -22,7 +23,7 @@ const errorCard = () => {
     errorMessage.removeEventListener('click', onErrorClick);
   };
 
-  errorMessage.addEventListener('çlick', onErrorClick);
+  errorMessage.addEventListener('click', onErrorClick);
   document.body.append(errorMessage);
 };
 
