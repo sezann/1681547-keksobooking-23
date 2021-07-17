@@ -1,6 +1,6 @@
 import {createCard} from './popup.js';
 import {toEnableFilters} from './filter.js';
-import {toEnableForm, onResetForm, addressInput} from './form.js';
+import {toEnableForm, onResetForm, addressInput, LOCATION_DIGITS_AMOUNT} from './form.js';
 
 const defaultCoordsLat = 35.68952;
 const defaultCoordsLng = 139.69203;
@@ -14,6 +14,41 @@ const onMapLoad = () => {
   toEnableFilters();
   addressInput(defaultCoordsLat, defaultCoordsLng);
   onResetForm();
+};
+
+const renderCards = (data) => {
+  data.forEach((point) => {
+    createMarker(point);
+  })
+};
+
+const createMarker = (point) => {
+  const {lat, lng} = point.location;
+
+  const icon = L.icon({
+    iconUrl: 'img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon,
+    },
+  );
+
+  marker
+    .addTo(markerGroup)
+    .bindPopup(
+      createCard(point),
+      {
+        keepInView: true,
+      },
+    );
 };
 
 const setUpMap = (data) => {
@@ -66,41 +101,6 @@ mainPinMarker.on('moveend', (evt) => {
 
 const resetMainPinMarker = () => {
   mainPinMarker.setLatLng(L.latLng(defaultCoordsLat, defaultCoordsLng));
-};
-
-const createMarker = (point) => {
-  const {lat, lng} = point.location;
-
-  const icon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
-
-  marker
-    .addTo(markerGroup)
-    .bindPopup(
-      createCard(point),
-      {
-        keepInView: true,
-      },
-    );
-};
-
-const renderCards = (data) => {
-  data.forEach((point) => {
-    createMarker(point);
-  })
 };
 
 const removeMarkers = () => {
