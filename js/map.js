@@ -1,5 +1,4 @@
-import {createCard} from './popup.js';
-import {toActivate} from './loading.js';
+import {createCard, renderFeatures, renderPhotos} from './popup.js';
 
 const LOCATION_DIGITS_AMOUNT = 5;
 const defaultCoordsLat = 35.68952;
@@ -11,7 +10,7 @@ const submitButton = document.querySelector('.ad-form__submit');
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    toActivate();
+    console.log('Карта инициализирована');
   })
   .setView({
     lat: defaultCoordsLat,

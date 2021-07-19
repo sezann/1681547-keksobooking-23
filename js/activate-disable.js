@@ -20,6 +20,6 @@ const toActivate = () => {
   mapFeatures.removeAttribute('disabled', 'disabled');
 };
 
-toDisable();
+toActivate();
 
 export {toActivate, toDisable};
