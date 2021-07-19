@@ -1,4 +1,4 @@
-import { isEnterEvent, isEscEvent } from "./utils";
+import { isEnterEvent, isEscEvent } from './utils.js';
 
 const MODAL_ZINDEX = '10000';
 const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);

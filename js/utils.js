@@ -1,12 +1,10 @@
 const ALERT_SHOW_TIME = 5000;
 
-const isEscEvent = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc';
-};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const isEnterEvent = (evt) => evt.key === 'Enter';
 
-const showAlert = (message = 'Не удалось загрузить данные') => {
+function showAlert (message = 'Не удалось загрузить данные') {
   return () => {
     const alertContainer = document.createElement('div');
     alertContainer.style.display = 'block';
@@ -26,8 +24,8 @@ const showAlert = (message = 'Не удалось загрузить данны�
     setTimeout(() => {
       alertContainer.remove();
     }, ALERT_SHOW_TIME);
-  }
-};
+  };
+}
 
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
@@ -35,6 +33,6 @@ function debounce (callback, timeoutDelay = 500) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-};
+}
 
 export {isEscEvent, isEnterEvent, showAlert, debounce};

@@ -9,7 +9,7 @@ import './form.js';
 
 import {getData} from './api.js';
 import {showAlert} from './utils.js';
-import {errorCard, successCard} from './user-modal.js';
+import {showSuccessCard, showErrorCard} from './user-modal.js';
 import {setFormSubmit, toDisableForm, onResetForm, fillAddressInput, resetButton, adForm} from './form.js';
 import {renderCards, setUpMap, resetMainPinMarker, defaultCoordsLat, defaultCoordsLng} from './map.js';
 import {mapFilters, toDisableFilters, setFilterChange} from './filter.js';
@@ -40,6 +40,6 @@ getData(DATA, (data) => {
 
 
 setFormSubmit(() => {
-  successCard();
+  showSuccessCard();
   setDefaults();
-}, errorCard);
+}, showErrorCard);
