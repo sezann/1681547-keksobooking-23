@@ -1,8 +1,10 @@
 import {sendData} from './api.js';
 
+const SERVER = 'https://23.javascript.pages.academy/keksobooking';
 const LOCATION_DIGITS_AMOUNT = 5;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+const MAX_PRICE_PER_NIGHT = 1000000;
 
 const roomsValue = {
   1: [1],
@@ -32,11 +34,11 @@ const checkOut = adForm.querySelector('#timeout');
 const resetButton = adForm.querySelector('.ad-form__reset');
 
 
-const onRoomChange = (evt) => {
+const validateGuests = (count) => {
   guestsCapacity.forEach((option) => {
     option.disabled = true;
   });
-  roomsValue[evt.target.value].forEach((seatsAmount) => {
+  roomsValue[count].forEach((seatsAmount) => {
     guestsCapacity.forEach((option) => {
       if (Number(option.value) === seatsAmount) {
         option.disabled = false;
@@ -44,6 +46,10 @@ const onRoomChange = (evt) => {
       }
     });
   });
+};
+
+const onRoomChange = (evt) => {
+  validateGuests(evt.target.value);
 };
 
 const onTypeOfHouseChange = () => {
@@ -58,9 +64,9 @@ formTitle.addEventListener('input', () => {
     formTitle.setCustomValidity(`Ещё ${  MIN_TITLE_LENGTH - valueLength } симв.`);
   } else if (valueLength > MAX_TITLE_LENGTH) {
     formTitle.setCustomValidity(`Удалите лишние ${  valueLength - MAX_TITLE_LENGTH } симв.`);
-  }  else if (formTitle.validity.valueMissing) {
+  } else if (formTitle.validity.valueMissing) {
     formTitle.setCustomValidity('Обязательное поле');
-  }  else {
+  } else {
     formTitle.setCustomValidity('');
   }
     formTitle.reportValidity();
@@ -74,17 +80,26 @@ const onCheckOutChange = () => {
   checkIn.value = checkOut.value;
 };
 
+const onPriceChange = () => {
+  const priceInput =price.value;
+  const typeInput = typeOfHouseSelect.value;
+  const minPrice = minPriceForNight[typeInput];
+
+  if (priceInput < minPrice) {
+    price.setCustomValidity(`Стоимость должна быть не менее ${minPrice}`);
+  } else if (price > MAX_PRICE_PER_NIGHT) {
+    price.setCustomValidity(`Стоимость не должна превышать ${MAX_PRICE_PER_NIGHT}`);
+  } else {
+    price.setCustomValidity('');
+  }
+  price.reportValidity();
+};
+
 roomsValueSelect.addEventListener ('change', onRoomChange);
 typeOfHouseSelect.addEventListener('change', onTypeOfHouseChange);
+price.addEventListener('input', onPriceChange);
 checkIn.addEventListener('change', onCheckInChange);
 checkOut.addEventListener('change', onCheckOutChange);
-
-const onResetForm = () => {
-  onTypeOfHouseChange();
-  onRoomChange();
-  onCheckInChange();
-  onCheckOutChange();
-};
 
 const toDisableForm = () => {
   adForm.classList.add('.ad-form--disabled');
@@ -95,11 +110,11 @@ const toDisableForm = () => {
   mapFilters.classList.add('map__filters--disabled');
   mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
     filter.classList.add('disabled');
-  })
+  });
 
   mapFilters.querySelectorAll('.map__features').forEach((feature) => {
     feature.classList.add('disabled');
-  })
+  });
 };
 
 const toEnableForm = () => {
@@ -111,17 +126,25 @@ const toEnableForm = () => {
   mapFilters.classList.remove('map__filters--disabled');
   mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
     filter.classList.remove('disabled');
-  })
+  });
 
   mapFilters.querySelectorAll('.map__features').forEach((feature) => {
     feature.classList.remove('disabled');
-  })
+  });
+  address.setAttribute('readonly', 'readonly');
 };
 
-const addressInput = (lat, lng) => {
+const fillAddressInput = (lat, lng) => {
   const latitude = lat.toFixed(LOCATION_DIGITS_AMOUNT);
   const longitude = lng.toFixed(LOCATION_DIGITS_AMOUNT);
   address.value = `${latitude} ${longitude}`;
+};
+
+const onResetForm = () => {
+  onTypeOfHouseChange();
+  validateGuests(roomsValueSelect.value);
+  onCheckInChange();
+  onCheckOutChange();
 };
 
 const setFormSubmit = (onSuccess, onError) => {
@@ -129,11 +152,12 @@ const setFormSubmit = (onSuccess, onError) => {
     evt.preventDefault();
 
   sendData(
-    onSuccess(),
-    onError(),
+    SERVER,
+    onSuccess,
+    onError,
     new FormData(evt.target),
     );
   });
 };
 
-export {setFormSubmit, onResetForm, toDisableForm, toEnableForm, addressInput, LOCATION_DIGITS_AMOUNT, resetButton, adForm};
+export {setFormSubmit, onResetForm, toDisableForm, toEnableForm, fillAddressInput, LOCATION_DIGITS_AMOUNT, minPriceForNight, resetButton, adForm};

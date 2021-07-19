@@ -7,7 +7,7 @@ const renderFeatures = (adElement, features) => {
   if(!features) {
     featureListElement.remove();
     return;
-  };
+  }
 
   featureListElement.innerHTML = '';
   features.forEach((item) => {
@@ -24,7 +24,7 @@ const renderPhotos = (adElement, photos) => {
   if(!photos) {
     photosListElement.remove();
     return;
-  };
+  }
 
   photosListElement.innerHTML = '';
   photos.forEach((url) => {

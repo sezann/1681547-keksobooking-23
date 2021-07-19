@@ -5,16 +5,17 @@ const RERENDER_DELAY = 500;
 const USER_OPTION = 'any';
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
+const SIMILAR_ADS_COUNT = 10;
 
 const mapFilters = document.querySelector('.map__filters');
+const mapFeatures = mapFilters.querySelector('.map__features');
+const filterFeatures = mapFilters.querySelector('.map__feature');
 const filterSelect = mapFilters.querySelectorAll('select');
 const filterType = mapFilters.querySelector('#housing-type');
 const filterPrice = mapFilters.querySelector('#housing-price');
 const filterRooms = mapFilters.querySelector('#housing-rooms');
 const filterGuests = mapFilters.querySelector('#housing-guests');
-const filterFeatures = mapFilters.querySelector('#housing-features');
-const filterElements = mapFilters.elements;
-const mapFeatures = mapFilters.querySelector('.map__features');
+
 
 const toDisableFilters = () => {
   mapFilters.classList.add('map__filters--disabled');
@@ -37,7 +38,7 @@ const userFilterType = (point) => {
   return filterValue === USER_OPTION ? true : point.offer.type === filterValue;
 }
 
-const userFilterPrice = (point, filterPrice) => {
+const userFilterPrice = (point) => {
   switch (filterPrice.value) {
     case USER_OPTION:
       return true;
@@ -47,14 +48,16 @@ const userFilterPrice = (point, filterPrice) => {
       return point.offer.price >= LOW_PRICE && point.offer.price < HIGH_PRICE;
     case 'high':
       return point.offer.price >= HIGH_PRICE;
-  };
+    default:
+      return false;
+  }
 };
 
-const userFilterRooms = (point, filterRooms) => {
+const userFilterRooms = (point) => {
   return filterRooms.value === USER_OPTION || Number(filterRooms.value) === point.offer.rooms;
 };
 
-const userFilterGuests = (point, filterGuests) => {
+const userFilterGuests = (point) => {
   return filterGuests.value === USER_OPTION ? true : parseInt(filterGuests.value, 10) <= point.offer.guests;
 };
 
@@ -63,7 +66,7 @@ const userFilterFeatures = (point) => {
   let count = 0;
 
   checkedFeatures.forEach((feature) => {
-    if(point.offer.features.includes(feature.value)) {
+    if (point.offer.features.includes(feature.value)) {
       count++;
     }
   });
@@ -80,7 +83,7 @@ const getFilteredPoints = (data) => {
       userFilterGuests(point) &&
       userFilterFeatures(point)
     );
-  })
+  });
   return filteredPoints;
 };
 
@@ -89,7 +92,7 @@ const onFilterChange = (data) => {
     evt.preventDefault();
     const filteredAdds = getFilteredPoints(data);
     removeMarkers();
-    renderCards(filteredAdds);
+    renderCards(filteredAdds.slice(0, SIMILAR_ADS_COUNT));
   }, RERENDER_DELAY);
 };
 
