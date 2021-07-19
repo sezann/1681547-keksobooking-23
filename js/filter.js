@@ -9,13 +9,12 @@ const SIMILAR_ADS_COUNT = 10;
 
 const mapFilters = document.querySelector('.map__filters');
 const mapFeatures = mapFilters.querySelector('.map__features');
-const filterFeatures = mapFilters.querySelector('.map__feature');
 const filterSelect = mapFilters.querySelectorAll('select');
 const filterType = mapFilters.querySelector('#housing-type');
 const filterPrice = mapFilters.querySelector('#housing-price');
 const filterRooms = mapFilters.querySelector('#housing-rooms');
 const filterGuests = mapFilters.querySelector('#housing-guests');
-
+const checkedFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
 
 const toDisableFilters = () => {
   mapFilters.classList.add('map__filters--disabled');
@@ -36,7 +35,7 @@ const toEnableFilters = () => {
 const userFilterType = (point) => {
   const filterValue = filterType.value;
   return filterValue === USER_OPTION ? true : point.offer.type === filterValue;
-}
+};
 
 const userFilterPrice = (point) => {
   switch (filterPrice.value) {
@@ -53,16 +52,15 @@ const userFilterPrice = (point) => {
   }
 };
 
-const userFilterRooms = (point) => {
+function userFilterRooms (point) {
   return filterRooms.value === USER_OPTION || Number(filterRooms.value) === point.offer.rooms;
 };
 
-const userFilterGuests = (point) => {
+function userFilterGuests (point) {
   return filterGuests.value === USER_OPTION ? true : parseInt(filterGuests.value, 10) <= point.offer.guests;
 };
 
 const userFilterFeatures = (point) => {
-  const checkedFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
   let count = 0;
 
   checkedFeatures.forEach((feature) => {

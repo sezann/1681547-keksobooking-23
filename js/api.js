@@ -5,7 +5,7 @@ const getData = (url, onSuccess, onFail) => {
       if(response.ok) {
         return response.json();
       }
-      onFail(`Не удалось загрузить данные`);
+      onFail('Не удалось загрузить данные');
     })
     .then(onSuccess)
     .catch(onFail);
@@ -13,7 +13,7 @@ const getData = (url, onSuccess, onFail) => {
 
 const sendData = (url, onSuccess, onFail, body) => {
   fetch(
-     url,
+    url,
     {
       method: 'POST',
       body,

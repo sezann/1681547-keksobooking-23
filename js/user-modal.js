@@ -10,6 +10,17 @@ errorMessage.classList.add('hidden');
 document.body.append(successMessage);
 document.body.append(errorMessage);
 
+const closeModal = (modal) => {
+  modal.classList.add('hidden');
+};
+
+const onClick = (modal) => {
+  return (evt) => {
+    evt.preventDefault();
+    closeModal(modal);
+  };
+};
+
 const onPopupKeydown = (modal) => {
   return (evt) => {
     if (isEscEvent(evt) || isEnterEvent(evt)) {
@@ -21,18 +32,7 @@ const onPopupKeydown = (modal) => {
     if (modal === errorMessage) {
       errorButton.removeEventListener('click', onClick(errorMessage));
     }
-  }
-};
-
-const onClick = (modal) => {
-  return (evt) => {
-    evt.preventDefault();
-    closeModal(modal);
-  }
-};
-
-const closeModal = (modal) => {
-  modal.classList.add('hidden');
+  };
 };
 
 const showModal = (modal) => {
@@ -40,7 +40,7 @@ const showModal = (modal) => {
   modal.style.zIndex = MODAL_ZINDEX;
   document.addEventListener('keydown', onPopupKeydown(modal));
   modal.addEventListener('click', onClick(modal));
-}
+};
 
 const showSuccessCard = () => {
   showModal(successMessage);

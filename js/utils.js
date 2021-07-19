@@ -25,7 +25,7 @@ function showAlert (message = 'Не удалось загрузить данны
       alertContainer.remove();
     }, ALERT_SHOW_TIME);
   };
-}
+};
 
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
@@ -33,6 +33,6 @@ function debounce (callback, timeoutDelay = 500) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export {isEscEvent, isEnterEvent, showAlert, debounce};

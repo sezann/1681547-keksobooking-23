@@ -69,7 +69,7 @@ formTitle.addEventListener('input', () => {
   } else {
     formTitle.setCustomValidity('');
   }
-    formTitle.reportValidity();
+  formTitle.reportValidity();
 });
 
 const onCheckInChange = () => {
@@ -151,11 +151,11 @@ const setFormSubmit = (onSuccess, onError) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-  sendData(
-    SERVER,
-    onSuccess,
-    onError,
-    new FormData(evt.target),
+    sendData(
+      SERVER,
+      onSuccess,
+      onError,
+      new FormData(evt.target),
     );
   });
 };

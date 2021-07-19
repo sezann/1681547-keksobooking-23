@@ -22,7 +22,7 @@ const setDefaults = () => {
   adForm.reset();
   resetMainPinMarker();
   onResetForm();
-  renderCards(data);
+  renderCards();
   fillAddressInput(defaultCoordsLat, defaultCoordsLng);
 };
 
@@ -42,4 +42,4 @@ getData(DATA, (data) => {
 setFormSubmit(() => {
   showSuccessCard();
   setDefaults();
-}, showErrorCard);
+}, showErrorCard());
