@@ -1,66 +1,54 @@
-export {isEscEvent} from './utils.js';
+import { isEnterEvent, isEscEvent } from './utils.js';
 
-const errorButton = document.querySelector('.error__button');
-const successModal = document.createElement('div');
-const errorModal = document.createElement('div');
+const MODAL_ZINDEX = '10000';
+const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const errorButton = errorMessage.querySelector('.error__button');
 
-successModal.classList.add('hidden');
-errorModal.classList.add('hidden');
+successMessage.classList.add('hidden');
+errorMessage.classList.add('hidden');
+document.body.append(successMessage);
+document.body.append(errorMessage);
 
-const successCard = () => {
-  const successTemplate = document.querySelector('#success');
-  const successTemplateElement = successTemplate.content.querySelector('.success');
-  const successMessage = successTemplateElement.cloneNode(true);
-  successMessage.querySelector('.success__message').textContent = `Ваше объявление\n` + `успешно размещено!`;
-  successModal.appendChild(successMessage);
-
-  document.body.append(successModal);
-  openSuccessCard();
+const closeModal = (modal) => {
+  modal.classList.add('hidden');
 };
 
-const errorCard = () => {
-  const errorTemplate = document.querySelector('#error');
-  const errorTemplateElement = errorTemplate.content.querySelector('.error');
-  const errorMessage = errorTemplateElement.cloneNode(true);
-  errorMessage.querySelector('.error__message').textContent = `Ошибка размещения объявления`;
-  errorMessage.querySelector('.error__button').textContent = `Попробовать снова`;
-  errorModal.appendChild(errorMessage);
-
-  document.body.append(errorModal);
-};
-
-function openSuccessCard () {
-  successModal.classList.remove('hidden');
-  document.addEventListener('keydown', onCloseSuccessCard);
-};
-
-function closeSuccessCard () {
-  successModal.classList.add('hidden');
-  document.removeEventListener('keydown', onCloseSuccessCard);
-};
-
-function openErrorCard () {
-  errorModal.classList.remove('hidden');
-  document.addEventListener('keydown', onCloseErrorCard);
-};
-
-function closeErrorCard () {
-  errorModal.classList.add('hidden');
-  document.removeEventListener('keydown', onCloseErrorCard);
-};
-
-const onCloseSuccessCard = (evt) => {
-  if (!successModal.contains(evt.target) || isEscEvent) {
+const onClick = (modal) => {
+  return (evt) => {
     evt.preventDefault();
-    closeSuccessCard();
-  }
+    closeModal(modal);
+  };
 };
 
-const onCloseErrorCard = (evt) => {
-  if (!errorModal.contains(evt.target) || isEscEvent || errorButton(evt.target)) {
-    evt.preventDefault();
-    closeErrorCard();
-  }
+const onPopupKeydown = (modal) => {
+  return (evt) => {
+    if (isEscEvent(evt) || isEnterEvent(evt)) {
+      evt.preventDefault();
+      document.removeEventListener('keydown', onPopupKeydown(modal));
+      modal.removeEventListener('click', onClick(modal));
+      closeModal(modal);
+    }
+    if (modal === errorMessage) {
+      errorButton.removeEventListener('click', onClick(errorMessage));
+    }
+  };
 };
 
-export {successCard, errorCard, openSuccessCard, openErrorCard};
+const showModal = (modal) => {
+  modal.classList.remove('hidden');
+  modal.style.zIndex = MODAL_ZINDEX;
+  document.addEventListener('keydown', onPopupKeydown(modal));
+  modal.addEventListener('click', onClick(modal));
+};
+
+const showSuccessCard = () => {
+  showModal(successMessage);
+};
+
+const showErrorCard = () => {
+  showModal(errorMessage);
+  errorButton.addEventListener('click', onClick(errorMessage));
+};
+
+export {closeModal, showSuccessCard, showErrorCard};
