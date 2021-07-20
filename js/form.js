@@ -1,20 +1,10 @@
 import {sendData} from './api.js';
-import {successCard, errorCard, openSuccessCard, openErrorCard} from './user-modal.js';
 
+const SERVER = 'https://23.javascript.pages.academy/keksobooking';
+const LOCATION_DIGITS_AMOUNT = 5;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
-
-const adForm = document.querySelector('.ad-form');
-const formTitle = adForm.querySelector('#title');
-const address = adForm.querySelector('#address');
-const roomsValueSelect = adForm.querySelector('#room_number');
-const guestsCapacity = adForm.querySelectorAll('#capacity option');
-const price = adForm.querySelector('#price');
-const typeOfHouseSelect = adForm.querySelector('#type');
-const checkIn = adForm.querySelector('#timein');
-const checkOut = adForm.querySelector('#timeout');
-const submitButton = adForm.querySelector('.ad-form__submit');
-const resetButton = adForm.querySelector('.ad-form__reset');
+const MAX_PRICE_PER_NIGHT = 1000000;
 
 const roomsValue = {
   1: [1],
@@ -31,11 +21,24 @@ const minPriceForNight = {
   palace: 10000,
 };
 
-const onRoomChange = (evt) => {
+const adForm = document.querySelector('.ad-form');
+const mapFilters = document.querySelector('.map__filters');
+const formTitle = adForm.querySelector('#title');
+const address = adForm.querySelector('#address');
+const roomsValueSelect = adForm.querySelector('#room_number');
+const guestsCapacity = adForm.querySelectorAll('#capacity option');
+const price = adForm.querySelector('#price');
+const typeOfHouseSelect = adForm.querySelector('#type');
+const checkIn = adForm.querySelector('#timein');
+const checkOut = adForm.querySelector('#timeout');
+const resetButton = adForm.querySelector('.ad-form__reset');
+
+
+const validateGuests = (count) => {
   guestsCapacity.forEach((option) => {
     option.disabled = true;
   });
-  roomsValue[evt.target.value].forEach((seatsAmount) => {
+  roomsValue[count].forEach((seatsAmount) => {
     guestsCapacity.forEach((option) => {
       if (Number(option.value) === seatsAmount) {
         option.disabled = false;
@@ -45,12 +48,14 @@ const onRoomChange = (evt) => {
   });
 };
 
-const onTypeOfHouseChange = () => {
-  price.setAttribute('min', minPriceForNight[typeOfHouseSelect.value]);
-  price.placeholder = minPriceForNight[typeOfHouseSelect.value];
+const onRoomChange = (evt) => {
+  validateGuests(evt.target.value);
 };
 
-// Заголовок объявления
+const onTypeOfHouseChange = () => {
+  price.min = minPriceForNight[typeOfHouseSelect.value];
+  price.placeholder = minPriceForNight[typeOfHouseSelect.value];
+};
 
 formTitle.addEventListener('input', () => {
   const valueLength = formTitle.value.length;
@@ -59,58 +64,100 @@ formTitle.addEventListener('input', () => {
     formTitle.setCustomValidity(`Ещё ${  MIN_TITLE_LENGTH - valueLength } симв.`);
   } else if (valueLength > MAX_TITLE_LENGTH) {
     formTitle.setCustomValidity(`Удалите лишние ${  valueLength - MAX_TITLE_LENGTH } симв.`);
-  }  else if (formTitle.validity.valueMissing) {
+  } else if (formTitle.validity.valueMissing) {
     formTitle.setCustomValidity('Обязательное поле');
-  }  else {
+  } else {
     formTitle.setCustomValidity('');
   }
-    formTitle.reportValidity();
+  formTitle.reportValidity();
 });
 
+const onCheckInChange = () => {
+  checkOut.value =  checkIn.value;
+};
 
-// Количество комнат и количество мест
+const onCheckOutChange = () => {
+  checkIn.value = checkOut.value;
+};
+
+const onPriceChange = () => {
+  const priceInput =price.value;
+  const typeInput = typeOfHouseSelect.value;
+  const minPrice = minPriceForNight[typeInput];
+
+  if (priceInput < minPrice) {
+    price.setCustomValidity(`Стоимость должна быть не менее ${minPrice}`);
+  } else if (price > MAX_PRICE_PER_NIGHT) {
+    price.setCustomValidity(`Стоимость не должна превышать ${MAX_PRICE_PER_NIGHT}`);
+  } else {
+    price.setCustomValidity('');
+  }
+  price.reportValidity();
+};
 
 roomsValueSelect.addEventListener ('change', onRoomChange);
-
-// Тип жилья и цена за ночь
-
 typeOfHouseSelect.addEventListener('change', onTypeOfHouseChange);
+price.addEventListener('input', onPriceChange);
+checkIn.addEventListener('change', onCheckInChange);
+checkOut.addEventListener('change', onCheckOutChange);
 
-// Время заезда и выезда
+const toDisableForm = () => {
+  adForm.classList.add('.ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
+    fieldset.classList.add('disabled');
+  });
 
-checkIn.addEventListener('change', () => {
-  checkOut.value =  checkIn.value;
-});
+  mapFilters.classList.add('map__filters--disabled');
+  mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
+    filter.classList.add('disabled');
+  });
 
-checkOut.addEventListener('change', () => {
-  checkIn.value = checkOut.value;
-});
-
-// Filters
-
-const mapFilters = document.querySelector('.map__filters');
-const mapFilterType = mapFilters.querySelector('#housing-type');
-const mapFilterPrice = mapFilters.querySelector('#housing-price');
-const mapFilterRooms = mapFilters.querySelector('#housing-rooms');
-const mapFilterGuests = mapFilters.querySelector('#housing-guests');
-const mapFilterFeatures = mapFilters.querySelector('#housing-features');
-
-
-
-// Отправка данных
-
-const setFormSubmit = (sendData, onSuccess) => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-  sendData(
-    () => onSuccess(),
-    () => errorCard(),
-    new FormData(evt.target),
-    );
-
-    adForm.reset();
+  mapFilters.querySelectorAll('.map__features').forEach((feature) => {
+    feature.classList.add('disabled');
   });
 };
 
-export {setFormSubmit};
+const toEnableForm = () => {
+  adForm.classList.remove('.ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
+    fieldset.classList.remove('disabled');
+  });
+
+  mapFilters.classList.remove('map__filters--disabled');
+  mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
+    filter.classList.remove('disabled');
+  });
+
+  mapFilters.querySelectorAll('.map__features').forEach((feature) => {
+    feature.classList.remove('disabled');
+  });
+  address.setAttribute('readonly', 'readonly');
+};
+
+const fillAddressInput = (lat, lng) => {
+  const latitude = lat.toFixed(LOCATION_DIGITS_AMOUNT);
+  const longitude = lng.toFixed(LOCATION_DIGITS_AMOUNT);
+  address.value = `${latitude} ${longitude}`;
+};
+
+const onResetForm = () => {
+  onTypeOfHouseChange();
+  validateGuests(roomsValueSelect.value);
+  onCheckInChange();
+  onCheckOutChange();
+};
+
+const setFormSubmit = (onSuccess, onError) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      SERVER,
+      onSuccess,
+      onError,
+      new FormData(evt.target),
+    );
+  });
+};
+
+export {setFormSubmit, onResetForm, toDisableForm, toEnableForm, fillAddressInput, LOCATION_DIGITS_AMOUNT, minPriceForNight, resetButton, adForm};

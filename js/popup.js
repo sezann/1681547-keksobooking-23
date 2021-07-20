@@ -7,7 +7,7 @@ const renderFeatures = (adElement, features) => {
   if(!features) {
     featureListElement.remove();
     return;
-  };
+  }
 
   featureListElement.innerHTML = '';
   features.forEach((item) => {
@@ -24,7 +24,7 @@ const renderPhotos = (adElement, photos) => {
   if(!photos) {
     photosListElement.remove();
     return;
-  };
+  }
 
   photosListElement.innerHTML = '';
   photos.forEach((url) => {
@@ -40,6 +40,7 @@ const renderPhotos = (adElement, photos) => {
 
 const createCard = (point) => {
   const adElement = similarAdTemplate.cloneNode(true);
+
   adElement.querySelector('.popup__avatar').src = point.author.avatar;
   adElement.querySelector('.popup__title').textContent = point.offer.title;
   adElement.querySelector('.popup__text--address').textContent = point.offer.address;
@@ -54,4 +55,4 @@ const createCard = (point) => {
   return adElement;
 };
 
-export {createCard, renderFeatures, renderPhotos};
+export {createCard};

@@ -1,19 +1,19 @@
-const Url = {
-  SERVER: 'https://23.javascript.pages.academy/keksobooking',
-  DATA: 'https://23.javascript.pages.academy/keksobooking/data',
+
+const getData = (url, onSuccess, onFail) => {
+  fetch(url)
+    .then((response) => {
+      if(response.ok) {
+        return response.json();
+      }
+      onFail('Не удалось загрузить данные');
+    })
+    .then(onSuccess)
+    .catch(onFail);
 };
 
-const getData = (onSuccess) => {
-  fetch(Url.DATA)
-    .then((response) => response.json())
-    .then((data) => {
-      onSuccess(data);
-  });
-};
-
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (url, onSuccess, onFail, body) => {
   fetch(
-     Url.SERVER,
+    url,
     {
       method: 'POST',
       body,
@@ -21,14 +21,11 @@ const sendData = (onSuccess, onFail, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
-      } else {
-        onFail();
+        return onSuccess();
       }
-    })
-    .catch (() => {
       onFail();
-    });
+    })
+    .catch(onFail);
 };
 
 export {getData, sendData};
