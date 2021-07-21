@@ -21,7 +21,6 @@ const setDefaults = () => {
   adForm.reset();
   resetMainPinMarker();
   onResetForm();
-  renderCards();
   fillAddressInput(defaultCoordsLat, defaultCoordsLng);
 };
 
