@@ -5,6 +5,7 @@ import {toEnableForm, onResetForm, fillAddressInput} from './form.js';
 const defaultCoordsLat = 35.68952;
 const defaultCoordsLng = 139.69203;
 const defaultZoom = 13;
+const SIMILAR_ADS_COUNT = 10;
 
 const map = L.map('map-canvas');
 const markers = [];
@@ -16,7 +17,7 @@ const mainPinMove = (evt) => {
 };
 
 const renderCards = (data) => {
-  data.forEach(({author, offer, location}) => {
+  data.slice(0, SIMILAR_ADS_COUNT).forEach(({author, offer, location}) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],

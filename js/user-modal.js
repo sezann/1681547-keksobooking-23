@@ -14,14 +14,14 @@ const closeModal = (modal) => {
   modal.classList.add('hidden');
 };
 
-const onClick = (modal) => {
+function onClick(modal) {
   return (evt) => {
     evt.preventDefault();
     closeModal(modal);
   };
 };
 
-const onPopupKeydown = (modal) => {
+function onPopupKeydown(modal) {
   return (evt) => {
     if (isEscEvent(evt) || isEnterEvent(evt)) {
       evt.preventDefault();

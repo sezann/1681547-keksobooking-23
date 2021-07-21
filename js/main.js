@@ -6,7 +6,6 @@ import './filter.js';
 import './user-modal.js';
 import './form.js';
 
-
 import {getData} from './api.js';
 import {showAlert} from './utils.js';
 import {showSuccessCard, showErrorCard} from './user-modal.js';
@@ -38,8 +37,7 @@ getData(DATA, (data) => {
   });
 }, showAlert(ALERT_MESSAGE));
 
-
 setFormSubmit(() => {
   showSuccessCard();
   setDefaults();
-}, showErrorCard());
+}, showErrorCard);

@@ -1,8 +1,7 @@
-
 const getData = (url, onSuccess, onFail) => {
   fetch(url)
     .then((response) => {
-      if(response.ok) {
+      if (response.ok) {
         return response.json();
       }
       onFail('Не удалось загрузить данные');
@@ -21,7 +20,7 @@ const sendData = (url, onSuccess, onFail, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        return onSuccess();
+       return onSuccess();
       }
       onFail();
     })
