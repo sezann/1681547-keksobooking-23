@@ -20,7 +20,7 @@ const sendData = (url, onSuccess, onFail, body) => {
   )
     .then((response) => {
       if (response.ok) {
-       return onSuccess();
+        return onSuccess();
       }
       onFail();
     })

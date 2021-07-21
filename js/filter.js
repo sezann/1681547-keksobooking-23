@@ -52,7 +52,7 @@ const userFilterPrice = (point) => {
 
 function userFilterRooms (point) {
   return filterRooms.value === USER_OPTION || Number(filterRooms.value) === point.offer.rooms;
-};
+}
 
 function userFilterGuests (point) {
   return filterGuests.value === USER_OPTION ? true : parseInt(filterGuests.value, 10) === point.offer.guests;

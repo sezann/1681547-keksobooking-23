@@ -19,7 +19,7 @@ function onClick(modal) {
     evt.preventDefault();
     closeModal(modal);
   };
-};
+}
 
 function onPopupKeydown(modal) {
   return (evt) => {
@@ -33,7 +33,7 @@ function onPopupKeydown(modal) {
       errorButton.removeEventListener('click', onClick(errorMessage));
     }
   };
-};
+}
 
 const showModal = (modal) => {
   modal.classList.remove('hidden');

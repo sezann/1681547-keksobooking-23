@@ -61,19 +61,19 @@ const onMapLoad = () => {
 };
 
 const setUpMap = (data) => {
-    map
-      .on('load',onMapLoad)
-      .setView({
-        lat: defaultCoordsLat,
-        lng: defaultCoordsLng,
-      }, defaultZoom);
+  map
+    .on('load',onMapLoad)
+    .setView({
+      lat: defaultCoordsLat,
+      lng: defaultCoordsLng,
+    }, defaultZoom);
 
-    L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      },
-    ).addTo(map);
+    },
+  ).addTo(map);
 
   renderCards(data);
 };
