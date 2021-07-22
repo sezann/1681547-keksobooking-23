@@ -14,14 +14,14 @@ const closeModal = (modal) => {
   modal.classList.add('hidden');
 };
 
-function onClick(modal) {
+const onClick = (modal) => {
   return (evt) => {
     evt.preventDefault();
     closeModal(modal);
   };
-}
+};
 
-function onPopupKeydown(modal) {
+const onPopupKeydown = (modal) => {
   return (evt) => {
     if (isEscEvent(evt) || isEnterEvent(evt)) {
       evt.preventDefault();
@@ -33,7 +33,7 @@ function onPopupKeydown(modal) {
       errorButton.removeEventListener('click', onClick(errorMessage));
     }
   };
-}
+};
 
 const showModal = (modal) => {
   modal.classList.remove('hidden');

@@ -101,12 +101,7 @@ price.addEventListener('input', onPriceChange);
 checkIn.addEventListener('change', onCheckInChange);
 checkOut.addEventListener('change', onCheckOutChange);
 
-const toDisableForm = () => {
-  adForm.classList.add('.ad-form--disabled');
-  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
-    fieldset.classList.add('disabled');
-  });
-
+const setDisableForm = () => {
   mapFilters.classList.add('map__filters--disabled');
   mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
     filter.classList.add('disabled');
@@ -115,14 +110,14 @@ const toDisableForm = () => {
   mapFilters.querySelectorAll('.map__features').forEach((feature) => {
     feature.classList.add('disabled');
   });
+
+  adForm.classList.add('.ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
+    fieldset.classList.add('disabled');
+  });
 };
 
-const toEnableForm = () => {
-  adForm.classList.remove('.ad-form--disabled');
-  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
-    fieldset.classList.remove('disabled');
-  });
-
+const setEnableForm = () => {
   mapFilters.classList.remove('map__filters--disabled');
   mapFilters.querySelectorAll('.map__filter').forEach((filter) => {
     filter.classList.remove('disabled');
@@ -131,13 +126,19 @@ const toEnableForm = () => {
   mapFilters.querySelectorAll('.map__features').forEach((feature) => {
     feature.classList.remove('disabled');
   });
+
+  adForm.classList.remove('.ad-form--disabled');
+  adForm.querySelectorAll('fieldset').forEach((fieldset) => {
+    fieldset.classList.remove('disabled');
+  });
+
   address.setAttribute('readonly', 'readonly');
 };
 
 const fillAddressInput = (lat, lng) => {
   const latitude = lat.toFixed(LOCATION_DIGITS_AMOUNT);
   const longitude = lng.toFixed(LOCATION_DIGITS_AMOUNT);
-  address.value = `${latitude} ${longitude}`;
+  address.value = `${latitude}, ${longitude}`;
 };
 
 const onResetForm = () => {
@@ -160,4 +161,4 @@ const setFormSubmit = (onSuccess, onError) => {
   });
 };
 
-export {setFormSubmit, onResetForm, toDisableForm, toEnableForm, fillAddressInput, LOCATION_DIGITS_AMOUNT, minPriceForNight, resetButton, adForm};
+export {setFormSubmit, onResetForm, setDisableForm, setEnableForm, fillAddressInput, LOCATION_DIGITS_AMOUNT, minPriceForNight, resetButton, adForm};

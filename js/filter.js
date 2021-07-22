@@ -5,6 +5,7 @@ const RERENDER_DELAY = 500;
 const USER_OPTION = 'any';
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
+const DEFAULT_OFFER_FEATURES = ['wi-fi', 'parking'];
 
 const mapFilters = document.querySelector('.map__filters');
 const mapFeatures = mapFilters.querySelector('.map__features');
@@ -14,7 +15,7 @@ const filterPrice = mapFilters.querySelector('#housing-price');
 const filterRooms = mapFilters.querySelector('#housing-rooms');
 const filterGuests = mapFilters.querySelector('#housing-guests');
 
-const toDisableFilters = () => {
+const setDisableFilters = () => {
   mapFilters.classList.add('map__filters--disabled');
   filterSelect.forEach((select) => {
     select.disabled = true;
@@ -22,7 +23,7 @@ const toDisableFilters = () => {
   mapFeatures.disabled = true;
 };
 
-const toEnableFilters = () => {
+const setEnableFilters = () => {
   mapFilters.classList.remove('map__filters--disable');
   filterSelect.forEach ((select) => {
     select.disabled = false;
@@ -30,12 +31,12 @@ const toEnableFilters = () => {
   mapFeatures.disabled = false;
 };
 
-const userFilterType = (point) => {
+const getFilteredType = (point) => {
   const filterValue = filterType.value;
   return filterValue === USER_OPTION ? true : point.offer.type === filterValue;
 };
 
-const userFilterPrice = (point) => {
+const getFilteredPrice = (point) => {
   switch (filterPrice.value) {
     case USER_OPTION:
       return true;
@@ -50,16 +51,22 @@ const userFilterPrice = (point) => {
   }
 };
 
-function userFilterRooms (point) {
+const getFilteredRooms = (point) => {
   return filterRooms.value === USER_OPTION || Number(filterRooms.value) === point.offer.rooms;
-}
+};
 
-function userFilterGuests (point) {
+const getFilteredGuests = (point) => {
   return filterGuests.value === USER_OPTION ? true : parseInt(filterGuests.value, 10) === point.offer.guests;
 };
 
-const userFilterFeatures = (point) => {
+const getFilteredFeatures = (point) => {
   const checkedFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
+
+  if(!point.offer.features) {
+    DEFAULT_OFFER_FEATURES;
+    return;
+  }
+
   let count = 0;
 
   checkedFeatures.forEach((feature) => {
@@ -74,13 +81,14 @@ const userFilterFeatures = (point) => {
 const getFilteredPoints = (data) => {
   const filteredPoints = data.filter((point) => {
     return (
-      userFilterType(point) &&
-      userFilterPrice(point) &&
-      userFilterRooms(point) &&
-      userFilterGuests(point) &&
-      userFilterFeatures(point)
+      getFilteredType(point) &&
+      getFilteredPrice(point) &&
+      getFilteredRooms(point) &&
+      getFilteredGuests(point) &&
+      getFilteredFeatures(point)
     );
   });
+
   return filteredPoints;
 };
 
@@ -97,4 +105,4 @@ const setFilterChange = (data) => {
   mapFilters.addEventListener('change', onFilterChange(data));
 };
 
-export {toEnableFilters, toDisableFilters, setFilterChange, mapFilters};
+export {setEnableFilters, setDisableFilters, setFilterChange, mapFilters};

@@ -1,50 +1,59 @@
 import {createCard} from './popup.js';
-import {toEnableFilters} from './filter.js';
-import {toEnableForm, onResetForm, fillAddressInput} from './form.js';
+import {setEnableFilters} from './filter.js';
+import {setEnableForm, onResetForm, fillAddressInput, LOCATION_DIGITS_AMOUNT} from './form.js';
 
 const defaultCoordsLat = 35.68952;
 const defaultCoordsLng = 139.69203;
 const defaultZoom = 13;
 const SIMILAR_ADS_COUNT = 10;
+const MAIN_POINT_WIDTH = 52;
+const POINT_WIDTH = 40;
 
 const map = L.map('map-canvas');
 const markers = [];
 
-const mainPinMove = (evt) => {
+const moveMainPin = (evt) => {
   const lat = evt.target.getLatLng().lat;
   const lng = evt.target.getLatLng().lng;
   fillAddressInput(lat, lng);
 };
 
 const renderCards = (data) => {
-  data.slice(0, SIMILAR_ADS_COUNT).forEach(({author, offer, location}) => {
-    const icon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
-    const lat = location.lat;
-    const lng = location.lng;
-    const marker = L.marker(
+  data.slice(0, SIMILAR_ADS_COUNT).forEach((point) => {
+    createMarker(point)
+  });
+};
+
+const createMarker = (point) => {
+  const lat = (point.location.lat).toFixed(LOCATION_DIGITS_AMOUNT);
+  const lng = (point.location.lng).toFixed(LOCATION_DIGITS_AMOUNT);
+
+  const icon = L.icon({
+    iconUrl: 'img/pin.svg',
+    iconSize: [POINT_WIDTH, POINT_WIDTH],
+    iconAnchor: [POINT_WIDTH / 2, POINT_WIDTH],
+  });
+
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon,
+    },
+  );
+
+  marker
+    .addTo(map)
+    .bindPopup(
+      createCard(point),
       {
-        lat,
-        lng,
-      },
-      {
-        icon,
+        keepInView: true,
       },
     );
 
-    marker
-      .addTo(map)
-      .bindPopup(
-        createCard({author, offer}),
-        {
-          keepInView: true,
-        },
-      );
-    markers.push(marker);
-  });
+  markers.push(marker);
 };
 
 const removeMarkers = () => {
@@ -54,8 +63,9 @@ const removeMarkers = () => {
 };
 
 const onMapLoad = () => {
-  toEnableForm();
-  toEnableFilters();
+  setEnableFilters();
+  onResetForm();
+  setEnableForm();
   fillAddressInput(defaultCoordsLat, defaultCoordsLng);
   onResetForm();
 };
@@ -81,8 +91,8 @@ const setUpMap = (data) => {
 const initMainPinMarker = () => {
   const mainPinIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
+    iconSize: [MAIN_POINT_WIDTH, MAIN_POINT_WIDTH],
+    iconAnchor: [MAIN_POINT_WIDTH / 2, MAIN_POINT_WIDTH],
   });
 
   const mainPinMarker = L.marker(
@@ -98,13 +108,13 @@ const initMainPinMarker = () => {
   return mainPinMarker;
 };
 
-const mainPinMarker = initMainPinMarker();
+const mainMarker = initMainPinMarker();
 
-mainPinMarker.addTo(map);
-mainPinMarker.on('move', mainPinMove);
+mainMarker.addTo(map);
+mainMarker.on('move', moveMainPin);
 
 const resetMainPinMarker = () => {
-  mainPinMarker.setLatLng(L.latLng(defaultCoordsLat, defaultCoordsLng));
+  mainMarker.setLatLng(L.latLng(defaultCoordsLat, defaultCoordsLng));
 };
 
 export {renderCards, setUpMap, removeMarkers, resetMainPinMarker, defaultCoordsLat, defaultCoordsLng};
