@@ -18,12 +18,6 @@ const moveMainPin = (evt) => {
   fillAddressInput(lat, lng);
 };
 
-const renderCards = (data) => {
-  data.slice(0, SIMILAR_ADS_COUNT).forEach((point) => {
-    createMarker(point)
-  });
-};
-
 const createMarker = (point) => {
   const lat = (point.location.lat).toFixed(LOCATION_DIGITS_AMOUNT);
   const lng = (point.location.lng).toFixed(LOCATION_DIGITS_AMOUNT);
@@ -54,6 +48,12 @@ const createMarker = (point) => {
     );
 
   markers.push(marker);
+};
+
+const renderCards = (data) => {
+  data.slice(0, SIMILAR_ADS_COUNT).forEach((point) => {
+    createMarker(point);
+  });
 };
 
 const removeMarkers = () => {
