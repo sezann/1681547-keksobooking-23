@@ -9,35 +9,47 @@ import './form.js';
 import {getData} from './api.js';
 import {showAlert} from './utils.js';
 import {showSuccessCard, showErrorCard} from './user-modal.js';
-import {setFormSubmit, setDisableForm, onResetForm, fillAddressInput, resetButton, adForm} from './form.js';
-import {setUpMap, resetMainPinMarker, defaultCoordsLat, defaultCoordsLng, renderCards} from './map.js';
-import {mapFilters, setDisableFilters, setFilterChange} from './filter.js';
+import {setFormSubmit, setDisableForm, setEnableForm, onResetForm, fillAddressInput, resetButton, adForm} from './form.js';
+import {initMap, resetMainPinMarker, defaultCoordsLat, defaultCoordsLng, renderCards, removeMarkers} from './map.js';
+import {mapFilters, setDisableFilters, setEnableFilters, setFilterChange} from './filter.js';
 
 const DATA = 'https://23.javascript.pages.academy/keksobooking/data';
 const ALERT_MESSAGE = 'Не удалось загрузить данные';
 
-const setDefaults = () => {
+const setDefaults = (data) => {
   mapFilters.reset();
   adForm.reset();
   resetMainPinMarker();
   onResetForm();
+  removeMarkers();
+  renderCards(data);
   fillAddressInput(defaultCoordsLat, defaultCoordsLng);
 };
+
+const onLoadForm = (data) => {
+  setEnableForm();
+  setEnableFilters();
+  setFilterChange(data);
+  fillAddressInput(defaultCoordsLat, defaultCoordsLng);
+};
+
 
 setDisableForm();
 setDisableFilters();
 
-getData(DATA, (data) => {
-  setUpMap(data);
-  renderCards(data);
-  setFilterChange(data);
+initMap (() => {
+  getData(DATA, (data) => {
+    renderCards(data);
+    onLoadForm(data);
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    setDefaults();
+    setDefaults(data);
   });
-}, showAlert(ALERT_MESSAGE));
 
-setFormSubmit(() => {
-  showSuccessCard();
-  setDefaults();
-}, showErrorCard);
+  setFormSubmit(() => {
+    showSuccessCard();
+    setDefaults(data);
+  }, showErrorCard);
+
+  }, showAlert(ALERT_MESSAGE));
+});

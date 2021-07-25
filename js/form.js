@@ -33,7 +33,6 @@ const checkIn = adForm.querySelector('#timein');
 const checkOut = adForm.querySelector('#timeout');
 const resetButton = adForm.querySelector('.ad-form__reset');
 
-
 const validateGuests = (count) => {
   guestsCapacity.forEach((option) => {
     option.disabled = true;

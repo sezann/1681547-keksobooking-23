@@ -1,13 +1,13 @@
 import {createCard} from './popup.js';
-import {setEnableFilters} from './filter.js';
-import {setEnableForm, onResetForm, fillAddressInput, LOCATION_DIGITS_AMOUNT} from './form.js';
+import {fillAddressInput, LOCATION_DIGITS_AMOUNT} from './form.js';
+
+const SIMILAR_ADS_COUNT = 10;
+const MAIN_POINT_WIDTH = 52;
+const POINT_WIDTH = 40;
 
 const defaultCoordsLat = 35.68952;
 const defaultCoordsLng = 139.69203;
 const defaultZoom = 13;
-const SIMILAR_ADS_COUNT = 10;
-const MAIN_POINT_WIDTH = 52;
-const POINT_WIDTH = 40;
 
 const map = L.map('map-canvas');
 const markers = [];
@@ -62,17 +62,9 @@ const removeMarkers = () => {
   });
 };
 
-const onMapLoad = () => {
-  setEnableFilters();
-  onResetForm();
-  setEnableForm();
-  fillAddressInput(defaultCoordsLat, defaultCoordsLng);
-  onResetForm();
-};
-
-const setUpMap = (data) => {
+const initMap = (cb) => {
   map
-    .on('load',onMapLoad)
+    .on('load', cb)
     .setView({
       lat: defaultCoordsLat,
       lng: defaultCoordsLng,
@@ -84,8 +76,6 @@ const setUpMap = (data) => {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
-
-  renderCards(data);
 };
 
 const initMainPinMarker = () => {
@@ -117,4 +107,4 @@ const resetMainPinMarker = () => {
   mainMarker.setLatLng(L.latLng(defaultCoordsLat, defaultCoordsLng));
 };
 
-export {renderCards, setUpMap, removeMarkers, resetMainPinMarker, defaultCoordsLat, defaultCoordsLng};
+export {initMap, removeMarkers, resetMainPinMarker, renderCards, defaultCoordsLat, defaultCoordsLng};
