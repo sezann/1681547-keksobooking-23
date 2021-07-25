@@ -41,15 +41,15 @@ initMap (() => {
   getData(DATA, (data) => {
     renderCards(data);
     onLoadForm(data);
-  resetButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    setDefaults(data);
-  });
+    resetButton.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      setDefaults(data);
+    });
 
-  setFormSubmit(() => {
-    showSuccessCard();
-    setDefaults(data);
-  }, showErrorCard);
+    setFormSubmit(() => {
+      showSuccessCard();
+      setDefaults(data);
+    }, showErrorCard);
 
   }, showAlert(ALERT_MESSAGE));
 });
